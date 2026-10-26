@@ -39,73 +39,50 @@ button.primary{background:var(--gold);color:#282014;border-color:var(--gold)}
 button:disabled{opacity:.45;cursor:default;transform:none}
 button:focus-visible{outline:3px solid #fff}
 
-/* ── Memory panel: cinematic side-panel (desktop) / bottom-sheet (mobile) ── */
-/* visibility:hidden instead of display:none lets CSS transforms animate in/out */
-.panelWrap{position:fixed;inset:0;z-index:5;visibility:hidden;pointer-events:none;transition:visibility 0s .5s}
-.panelWrap.show{visibility:visible;pointer-events:auto;transition:visibility 0s}
-
-/* Soft backdrop — suppressed on wide screens, dims scene on mobile */
-.panelBackdrop{position:absolute;inset:0;background:transparent;transition:background .45s ease}
-.panelWrap.show .panelBackdrop{background:rgba(7,16,27,.45)}
-@media(min-width:900px){.panelBackdrop{background:transparent!important;pointer-events:none}}
-
-/* ── Story panel ── */
-.panel{
-  position:absolute;top:0;right:0;bottom:0;width:min(460px,100%);
-  background:linear-gradient(165deg,#1c2e44 0%,#111d2f 58%,#0c1623 100%);
-  border-left:1px solid rgba(255,220,145,.16);
-  padding:clamp(48px,6vw,68px) clamp(22px,4vw,44px) clamp(28px,4vw,48px);
-  overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;
-  transform:translateX(102%);transition:transform .52s cubic-bezier(.16,1,.3,1);
-  box-shadow:-16px 0 64px rgba(0,0,0,.55);will-change:transform;
+/* ── Memory popup: centred cinematic dialog (original design, enhanced content) ── */
+/* Always display:flex for alignment; visibility+opacity gate events/visibility.
+   This lets overlay AND popup article animate on both open and close.          */
+.modalWrap{
+  position:fixed;inset:0;z-index:5;
+  display:flex;align-items:center;justify-content:center;
+  padding:clamp(16px,3vw,40px);
+  background:rgba(7,16,27,0);backdrop-filter:blur(9px);
+  visibility:hidden;pointer-events:none;opacity:0;
+  transition:opacity .28s ease,background .3s ease,visibility 0s .28s
+}
+.modalWrap.show{
+  visibility:visible;pointer-events:auto;opacity:1;
+  background:rgba(7,16,27,.72);
+  transition:opacity .28s ease,background .3s ease
+}
+/* The popup article — dark navy gradient, warm gold border, deep shadow */
+.modal{
+  width:min(660px,100%);max-height:88vh;overflow-y:auto;overflow-x:hidden;
+  background:linear-gradient(148deg,#253649 0%,#1a2a3c 45%,#121d2e 100%);
+  border:1px solid rgba(255,226,163,.22);border-radius:24px;
+  padding:clamp(22px,4vw,44px);
+  box-shadow:0 24px 100px rgba(0,0,0,.6),0 0 0 .5px rgba(255,220,140,.06);
+  display:flex;flex-direction:column;
+  transform:scale(.96) translateY(10px);
+  transition:transform .32s cubic-bezier(.16,1,.3,1);
+  will-change:transform;
   scrollbar-width:thin;scrollbar-color:rgba(255,213,138,.2) transparent
 }
-.panelWrap.show .panel{transform:translateX(0)}
+.modalWrap.show .modal{transform:scale(1) translateY(0)}
+@media(prefers-reduced-motion:reduce){.modal,.modalWrap{transition:none}}
 
-/* ── Mobile: bottom sheet ── */
-@media(max-width:899px){
-  .panelWrap.show .panelBackdrop{background:rgba(7,16,27,.62)}
-  .panel{
-    top:auto;left:0;right:0;width:100%;max-height:82dvh;
-    border-left:none;border-top:1px solid rgba(255,220,145,.18);
-    border-radius:22px 22px 0 0;
-    padding:0 clamp(18px,5vw,28px) max(24px,calc(16px + env(safe-area-inset-bottom,0px)));
-    transform:translateY(102%);box-shadow:0 -16px 64px rgba(0,0,0,.55)
-  }
-  .panelWrap.show .panel{transform:translateY(0)}
-  /* Drag-handle pill */
-  .panel::before{
-    content:'';display:block;flex-shrink:0;
-    width:40px;height:4px;border-radius:2px;
-    background:rgba(255,255,255,.22);margin:14px auto 20px
-  }
-}
-@media(prefers-reduced-motion:reduce){.panel,.panelBackdrop{transition:none}}
-
-/* ── Panel close button ── */
-.panel-close{
-  position:sticky;top:0;float:right;flex-shrink:0;
-  margin:-4px -4px 10px 12px;
-  width:36px;height:36px;min-width:36px;padding:0;border-radius:50%;
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);
-  color:#c4b492;font-size:14px;line-height:1;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:background .2s
-}
-.panel-close:hover{background:rgba(255,255,255,.18)}
-.panel-close:focus-visible{outline:3px solid #fff}
-
-/* ── Panel typography ── */
-.panel-year{font:600 10px/1.5 system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.panel-title{font:400 clamp(24px,3.5vw,40px)/1.08 Georgia,'Times New Roman',serif;letter-spacing:-.03em;color:var(--cream);margin:0 0 10px}
-.panel-subtitle{font:italic clamp(13px,1.5vw,16px)/1.6 Georgia,serif;color:rgba(255,240,205,.62);margin:0 0 22px}
-.panel-rule{width:44px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:0 0 22px;border:none;flex-shrink:0}
+/* ── Popup typography ── */
+.modal-eyebrow{font:600 10px/1.5 system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.modal-title{font:400 clamp(26px,4.5vw,46px)/1.04 Georgia,'Times New Roman',serif;letter-spacing:-.03em;color:var(--cream);margin:0 0 8px}
+.modal-subtitle{font:italic clamp(13px,1.6vw,16px)/1.6 Georgia,serif;color:rgba(255,240,205,.62);margin:0 0 20px}
+.modal-rule{width:44px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:0 0 20px;border:none;flex-shrink:0}
 
 /* ── Story paragraphs ── */
-.panel-story{display:flex;flex-direction:column;gap:16px;margin-bottom:18px}
-.panel-story p{font-size:clamp(14px,1.4vw,16px);line-height:1.85;color:#ede0cc;margin:0}
+.modal-story{display:flex;flex-direction:column;gap:16px;margin-bottom:18px}
+.modal-story p{font-size:clamp(14px,1.5vw,16px);line-height:1.82;color:#ede0cc;margin:0}
 
 /* ── Telugu message ── */
-.panel-telugu{
+.modal-telugu{
   border-top:1px solid rgba(255,218,130,.12);padding-top:14px;margin-bottom:16px;
   font-size:clamp(15px,1.7vw,19px);line-height:1.9;color:#ffdc9d;
   font-family:'Noto Sans Telugu','Potti Sreeramulu',system-ui,sans-serif
@@ -216,10 +193,8 @@ button:focus-visible{outline:3px solid #fff}
 .lightbox-caption{font:italic 13px/1.6 Georgia,serif;color:rgba(255,240,200,.72);margin:0;flex:1;text-align:center}
 .lightbox-counter{font:600 10px/1 system-ui,sans-serif;letter-spacing:.12em;color:rgba(255,213,138,.48);white-space:nowrap;flex-shrink:0}
 
-/* ── Panel action buttons ── */
-.panel-actions{margin-top:auto;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;gap:9px}
-.panel-actions .panel-continue{width:100%;text-align:center;padding:14px;font-size:13px}
-.panel-actions .panel-return{width:100%;text-align:center;font-size:11px;color:rgba(255,240,200,.65);background:transparent;border-color:rgba(255,240,200,.15)}
+/* ── Modal action buttons (Return to Road + Continue the journey) ── */
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap;padding-top:16px;border-top:1px solid rgba(255,255,255,.07)}
 
 /* ── Progress dots ── */
 .progress{position:fixed;left:50%;bottom:95px;transform:translateX(-50%);display:flex;gap:6px;z-index:2;pointer-events:auto}
@@ -250,7 +225,8 @@ button:focus-visible{outline:3px solid #fff}
   .controls button{padding:11px 13px;font-size:11px}
   .progress{bottom:calc(94px + env(safe-area-inset-bottom, 0px))}
   .brand{font-size:9px}
-  /* Panel mobile overrides handled inside the 899px breakpoint in the panel block */
+  /* Mobile popup: slightly reduced padding and max height */
+  .modal{padding:20px;padding-bottom:max(20px,calc(12px + env(safe-area-inset-bottom,0px)));max-height:90dvh;border-radius:18px}
 }
 </style>
 </head>
@@ -304,47 +280,40 @@ button:focus-visible{outline:3px solid #fff}
 </div>
 
 <!--
-  Memory panel — cinematic side panel on desktop, bottom sheet on mobile.
-  All id="" values preserved: openModal/closeModal and listener setup rely on them.
-  role="dialog" + aria-modal + aria-labelledby provide correct AT semantics.
-  Initial aria-hidden="true" removed when panel opens; restored on close.
+  Memory popup — restored to the original centred design, enhanced with gallery,
+  paragraph splitting, Telugu, subtitle, and focus management from later phases.
+  Clicking outside the popup (.modalWrap backdrop) closes it.
+  aria-hidden managed by openModal / closeModal.
 -->
-<div class="panelWrap" id="modalWrap"
+<div class="modalWrap" id="modalWrap"
      role="dialog" aria-modal="true" aria-labelledby="mTitle" aria-hidden="true">
 
-  <!-- Backdrop: click closes panel (full-screen, behind .panel in stacking order) -->
-  <div class="panelBackdrop" id="panelBackdrop" aria-hidden="true"></div>
+  <article class="modal">
+    <!-- Stop identity ───────────────────────────────────────────────────── -->
+    <!-- mEyebrow ← s.year + ' · ' + c.tag  (set by openModal) -->
+    <div class="modal-eyebrow" id="mEyebrow"></div>
+    <!-- mTitle   ← s.title (stop headline) -->
+    <h2 class="modal-title" id="mTitle"></h2>
+    <!-- mSubtitle ← c.subtitle (narrative tagline) -->
+    <p class="modal-subtitle" id="mSubtitle"></p>
+    <hr class="modal-rule" aria-hidden="true">
 
-  <article class="panel">
-    <!-- ✕ close button — sticky at the top-right corner of the panel -->
-    <button class="panel-close" id="closeBtn" aria-label="Return to road">✕</button>
-
-    <!-- Stop identity ────────────────────────────────────────────────────── -->
-    <!-- mEyebrow  ← s.year + ' · ' + c.tag  (set by openModal) -->
-    <div class="panel-year" id="mEyebrow"></div>
-    <!-- mTitle    ← s.title (stop headline, set by openModal) -->
-    <h2 class="panel-title" id="mTitle"></h2>
-    <!-- mSubtitle ← c.subtitle (set by openModal) -->
-    <p class="panel-subtitle" id="mSubtitle"></p>
-    <hr class="panel-rule" aria-hidden="true">
-
-    <!-- Configured photos — hidden by default; fillGallery() removes hidden when photos exist -->
+    <!-- Configured photographs (hidden when no photos configured) -->
     <div id="photoGallery" class="photoGallery" aria-label="Photographs" hidden></div>
 
-    <!-- Story body: openModal injects <p> per paragraph (split on \n\n) -->
-    <div class="panel-story" id="mBody"></div>
+    <!-- Story (openModal injects one <p> per paragraph, split on blank lines) -->
+    <div class="modal-story" id="mBody"></div>
 
-    <!-- Telugu message: hidden attr managed by openModal / removed when empty -->
-    <div class="panel-telugu" id="mTelugu" hidden aria-label="Message in Telugu"></div>
+    <!-- Optional Telugu message (hidden when empty) -->
+    <div class="modal-telugu" id="mTelugu" hidden aria-label="Message in Telugu"></div>
 
-    <!-- Future-scene gallery (last stop only) — hidden until fillGallery injects images -->
+    <!-- Future-experience gallery (Stops 4 & 5) -->
     <div id="futureGallery" class="photoGallery" aria-label="Future possibilities" hidden></div>
 
-    <!-- Navigation ─────────────────────────────────────────────────────── -->
-    <div class="panel-actions">
-      <button class="primary panel-continue" id="continueBtn">Continue the journey →</button>
-      <!-- Secondary close — identical behaviour to ✕, just a labelled text button -->
-      <button class="panel-return" id="panelReturnBtn">Return to Road</button>
+    <!-- Action buttons ──────────────────────────────────────────────────── -->
+    <div class="modal-actions">
+      <button id="closeBtn">Return to Road</button>
+      <button class="primary" id="continueBtn">Continue the journey →</button>
     </div>
   </article>
 </div>
@@ -1094,21 +1063,21 @@ function openModal() {
   // ── Photo galleries ────────────────────────────────────────────────────
   fillGallery('photoGallery', s.photos || []);
   const future = (content.site.futureScenes || []).filter(
-    f => s.futureScene && (f.id === s.futureScene || s.futureScene === 'all')
+    f => f.enabled !== false && s.futureScene && (f.id === s.futureScene || s.futureScene === 'all')
   );
   fillGallery('futureGallery', future.map(f => ({
-    src: f.src,
-    caption: f.title + ' · An imagined possibility',
+    src: f.src || f.image,
+    caption: f.caption || (f.title + ' · An imagined possibility'),
   })));
 
-  // ── Show panel and manage accessibility ───────────────────────────────
+  // ── Show popup and manage accessibility ──────────────────────────────
   const wrap = $('modalWrap');
   wrap.setAttribute('aria-hidden', 'false');
   wrap.classList.add('show');
-  // Scroll panel back to top in case it was scrolled on a previous visit.
-  const panel = wrap.querySelector('.panel');
-  if (panel) panel.scrollTop = 0;
-  // Focus the close button — first interactive element in the panel.
+  // Scroll popup back to top in case it was scrolled on a previous visit.
+  const modal = wrap.querySelector('.modal');
+  if (modal) modal.scrollTop = 0;
+  // Focus the close button so keyboard users can navigate the popup.
   $('closeBtn').focus();
 }
 
@@ -1128,19 +1097,19 @@ $('nextBtn').addEventListener('click', () =>
 $('prevBtn').addEventListener('click', () => goTo(current - 1));
 $('memoryBtn').addEventListener('click', openModal);
 
-// Panel close: ✕ button (top corner) and the text "Return to Road" button.
+// Popup close: "Return to Road" button.
 $('closeBtn').addEventListener('click', closeModal);
-$('panelReturnBtn').addEventListener('click', closeModal);
 
-// Continue: closes panel then advances to the next stop (wraps at end).
+// Continue: closes popup then advances to the next stop (wraps at end).
 $('continueBtn').addEventListener('click', () => {
   closeModal();
   goTo(current === chapters.length - 1 ? 0 : current + 1);
 });
 
-// Clicking the backdrop (the area outside the panel, or directly the wrapper
-// on desktop where the backdrop covers the full left side) also closes the panel.
-$('panelBackdrop').addEventListener('click', closeModal);
+// Clicking the dark backdrop (outside the popup article) closes the popup.
+$('modalWrap').addEventListener('click', e => {
+  if (e.target === $('modalWrap')) closeModal();
+});
 
 // ── Lightbox listeners ────────────────────────────────────────────────────
 $('lbClose').addEventListener('click', closeLightbox);
