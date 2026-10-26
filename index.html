@@ -111,13 +111,110 @@ button:focus-visible{outline:3px solid #fff}
   font-family:'Noto Sans Telugu','Potti Sreeramulu',system-ui,sans-serif
 }
 
-/* ── Photo galleries ── */
-.photoGallery{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:8px 0 20px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.photoGallery::-webkit-scrollbar{display:none}
-.photoGallery figure{margin:0;min-width:min(230px,82%);max-width:320px;flex-shrink:0;scroll-snap-align:start}
-.photoGallery img{width:100%;height:160px;object-fit:cover;background:#0a1423;border-radius:12px;border:1px solid rgba(255,240,200,.1)}
-.photoGallery figcaption{font:11px/1.4 system-ui,sans-serif;color:#c4b090;margin:6px 4px 0}
-.photoGallery:empty{display:none}
+/* ── Photo gallery (one-at-a-time slideshow inside the memory panel) ── */
+/* Outer wrapper is a plain block; JS sets/removes the hidden attr */
+.photoGallery{display:block;margin:0 0 18px}
+.photoGallery[hidden]{display:none!important}
+
+/* Gallery stage: the bordered image frame */
+.gallery-stage{position:relative;width:100%;border-radius:14px;overflow:hidden;background:#070f1a;outline:none;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+.gallery-stage:focus-visible{box-shadow:0 0 0 3px rgba(255,213,138,.45),0 4px 24px rgba(0,0,0,.5)}
+
+/* Viewport: fixed aspect-ratio frame — no layout shift when images load */
+.gallery-viewport{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden}
+
+/* Individual frames — stacked; .active is the only visible one */
+.gallery-frame{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:10px;opacity:0;transition:opacity .32s ease;pointer-events:none}
+.gallery-frame.active{opacity:1;pointer-events:auto}
+@media(prefers-reduced-motion:reduce){.gallery-frame{transition:none}}
+
+/* Photograph — object-fit:contain preserves aspect ratio, never crops */
+.gallery-img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;border-radius:5px;box-shadow:0 6px 32px rgba(0,0,0,.75);cursor:zoom-in}
+
+/* Broken-image placeholder */
+.gallery-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:rgba(255,218,130,.32);font:12px/1.4 system-ui,sans-serif;width:100%;height:100%}
+
+/* Prev / Next navigation arrows */
+.gallery-nav{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  width:38px;height:38px;min-width:38px;padding:0;border-radius:50%;
+  background:rgba(7,15,30,.78);border:1px solid rgba(255,232,160,.15);
+  color:#e2d2ae;font-size:20px;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  opacity:.85;transition:background .2s,opacity .2s;backdrop-filter:blur(6px)
+}
+.gallery-nav:hover{background:rgba(16,30,58,.95);opacity:1}
+.gallery-nav:focus-visible{outline:3px solid #fff}
+.gallery-prev{left:8px}
+.gallery-next{right:8px}
+
+/* Expand (lightbox) button — bottom-right corner of stage */
+.gallery-expand{
+  position:absolute;bottom:8px;right:8px;z-index:2;
+  width:32px;height:32px;min-width:32px;padding:0;border-radius:8px;
+  background:rgba(7,15,30,.78);border:1px solid rgba(255,232,160,.15);
+  color:#e2d2ae;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  opacity:.72;transition:opacity .2s;backdrop-filter:blur(6px)
+}
+.gallery-expand:hover{opacity:1}
+.gallery-expand:focus-visible{outline:3px solid #fff}
+
+/* Caption + counter row below the stage */
+.gallery-footer{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 2px 0}
+.gallery-caption{font:italic 12px/1.5 system-ui,sans-serif;color:#9c8a68;margin:0;flex:1}
+.gallery-caption:empty{display:none}
+.gallery-counter{font:600 10px/1 system-ui,sans-serif;letter-spacing:.1em;color:rgba(255,213,138,.42);white-space:nowrap;flex-shrink:0}
+
+/* ── Photo lightbox (full-screen viewer, z-index 50 above the panel) ── */
+.lightbox{
+  position:fixed;inset:0;z-index:50;
+  background:rgba(4,8,16,.97);
+  display:flex;align-items:center;justify-content:center;
+  padding:68px 88px;
+  visibility:hidden;pointer-events:none;
+  opacity:0;transition:opacity .28s ease,visibility 0s .28s
+}
+.lightbox.open{visibility:visible;pointer-events:auto;opacity:1;transition:opacity .28s ease}
+@media(prefers-reduced-motion:reduce){.lightbox{transition:none}}
+@media(max-width:600px){.lightbox{padding:56px 16px 72px}}
+
+/* The enlarged photograph */
+.lightbox-img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;border-radius:7px;box-shadow:0 20px 80px rgba(0,0,0,.85)}
+
+/* Close button */
+.lightbox-close{
+  position:fixed;top:18px;right:18px;
+  width:44px;height:44px;min-width:44px;padding:0;border-radius:50%;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  color:#fff;font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .2s
+}
+.lightbox-close:hover{background:rgba(255,255,255,.22)}
+.lightbox-close:focus-visible{outline:3px solid #fff}
+
+/* Lightbox prev / next arrows */
+.lightbox-nav{
+  position:fixed;top:50%;transform:translateY(-50%);
+  width:48px;height:48px;min-width:48px;padding:0;border-radius:50%;
+  background:rgba(10,18,36,.75);border:1px solid rgba(255,240,190,.16);
+  color:#e8d9bb;font-size:24px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;backdrop-filter:blur(8px)
+}
+.lightbox-nav:hover{background:rgba(20,34,64,.95)}
+.lightbox-nav:focus-visible{outline:3px solid #fff}
+.lightbox-prev{left:16px}
+.lightbox-next{right:16px}
+
+/* Caption + counter fixed at bottom */
+.lightbox-footer{
+  position:fixed;bottom:0;left:0;right:0;
+  padding:18px 96px;display:flex;justify-content:space-between;align-items:center;
+  background:linear-gradient(transparent,rgba(4,8,16,.82));pointer-events:none
+}
+@media(max-width:600px){.lightbox-footer{padding:14px 16px}}
+.lightbox-caption{font:italic 13px/1.6 Georgia,serif;color:rgba(255,240,200,.72);margin:0;flex:1;text-align:center}
+.lightbox-counter{font:600 10px/1 system-ui,sans-serif;letter-spacing:.12em;color:rgba(255,213,138,.48);white-space:nowrap;flex-shrink:0}
 
 /* ── Panel action buttons ── */
 .panel-actions{margin-top:auto;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;gap:9px}
@@ -190,6 +287,23 @@ button:focus-visible{outline:3px solid #fff}
 <div class="progress" id="progress" aria-label="Journey stops"></div>
 
 <!--
+  Photo lightbox — full-screen viewer (z-index 50, above the memory panel).
+  Opened by clicking a gallery image or the expand (⛶) button.
+  Escape closes lightbox (intercepted before the panel Escape handler).
+-->
+<div id="photoLightbox" class="lightbox"
+     role="dialog" aria-modal="true" aria-label="Photograph viewer" aria-hidden="true">
+  <button id="lbClose" class="lightbox-close" aria-label="Close photograph viewer">✕</button>
+  <button id="lbPrev"  class="lightbox-nav lightbox-prev" aria-label="Previous photograph" hidden>‹</button>
+  <button id="lbNext"  class="lightbox-nav lightbox-next" aria-label="Next photograph"     hidden>›</button>
+  <img id="lbImg" class="lightbox-img" src="" alt="" loading="lazy">
+  <div class="lightbox-footer">
+    <p    id="lbCaption" class="lightbox-caption"></p>
+    <span id="lbCounter" class="lightbox-counter" aria-live="polite" hidden></span>
+  </div>
+</div>
+
+<!--
   Memory panel — cinematic side panel on desktop, bottom sheet on mobile.
   All id="" values preserved: openModal/closeModal and listener setup rely on them.
   role="dialog" + aria-modal + aria-labelledby provide correct AT semantics.
@@ -214,8 +328,8 @@ button:focus-visible{outline:3px solid #fff}
     <p class="panel-subtitle" id="mSubtitle"></p>
     <hr class="panel-rule" aria-hidden="true">
 
-    <!-- Configured photos (empty = gallery hides itself via :empty) -->
-    <div id="photoGallery" class="photoGallery" aria-label="Photographs"></div>
+    <!-- Configured photos — hidden by default; fillGallery() removes hidden when photos exist -->
+    <div id="photoGallery" class="photoGallery" aria-label="Photographs" hidden></div>
 
     <!-- Story body: openModal injects <p> per paragraph (split on \n\n) -->
     <div class="panel-story" id="mBody"></div>
@@ -223,8 +337,8 @@ button:focus-visible{outline:3px solid #fff}
     <!-- Telugu message: hidden attr managed by openModal / removed when empty -->
     <div class="panel-telugu" id="mTelugu" hidden aria-label="Message in Telugu"></div>
 
-    <!-- Future-scene gallery (last stop only) -->
-    <div id="futureGallery" class="photoGallery" aria-label="Future possibilities"></div>
+    <!-- Future-scene gallery (last stop only) — hidden until fillGallery injects images -->
+    <div id="futureGallery" class="photoGallery" aria-label="Future possibilities" hidden></div>
 
     <!-- Navigation ─────────────────────────────────────────────────────── -->
     <div class="panel-actions">
@@ -759,26 +873,178 @@ function updateCopy() {
   document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
 }
 
-// ── UI: photo gallery ─────────────────────────────────────────────────────
+// ── DOM helper ────────────────────────────────────────────────────────────
+// mkEl: create element with className. Distinct from $() (getElementById).
+function mkEl(tag, cls) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  return e;
+}
+
+// ── Photo gallery (one-at-a-time slideshow with lightbox) ─────────────────
+// Replaces the simple horizontal scroll strip with a full-featured gallery:
+//   • One photograph displayed at a time inside a fixed-aspect-ratio frame.
+//   • object-fit:contain — never crops portraits or landscapes.
+//   • Prev/next buttons (only when > 1 photo).
+//   • Expand button opens the photo in the full-screen lightbox.
+//   • Keyboard: ArrowLeft/Right navigate within the gallery (stop-propagation
+//     prevents the HUD milestone navigation from also firing).
+//   • Touch: horizontal swipe (>40 px) navigates between photos.
+//   • Broken images → friendly placeholder, no broken-image browser icon.
+//   • Empty gallery → host element hidden via hidden attribute.
 function fillGallery(id, photos) {
-  const host = $(id);
+  const host  = $(id);
   host.replaceChildren();
-  for (const photo of photos) {
-    if (!photo.src) continue;
-    const fig = document.createElement('figure');
-    const img = document.createElement('img');
-    const cap = document.createElement('figcaption');
-    img.src     = photo.src;
-    img.alt     = photo.caption || 'Memory photograph';
-    img.loading = 'lazy';
+
+  const valid = (photos || []).filter(p => p && p.src);
+  if (!valid.length) { host.setAttribute('hidden', ''); return; }
+  host.removeAttribute('hidden');
+
+  const total = valid.length;
+  let   idx   = 0;  // index of the currently shown photo
+
+  // ── Gallery DOM structure ──────────────────────────────────────────────
+  //   host → stage(viewport + navBtns + expandBtn) + footer(caption + counter)
+  const stage    = mkEl('div', 'gallery-stage');
+  const viewport = mkEl('div', 'gallery-viewport');
+  const footer   = mkEl('div', 'gallery-footer');
+  const caption  = mkEl('p',   'gallery-caption');
+  const counter  = total > 1 ? mkEl('span', 'gallery-counter') : null;
+
+  stage.setAttribute('tabindex', '0');
+  stage.setAttribute('role',     'region');
+
+  // ── One frame per photo (stacked; .active is shown) ───────────────────
+  const frames = valid.map((photo, i) => {
+    const frame = mkEl('div', i === 0 ? 'gallery-frame active' : 'gallery-frame');
+    const img   = document.createElement('img');
+    img.className = 'gallery-img';
+    img.alt       = photo.caption || photo.alt || 'Memory photograph';
+    img.loading   = i === 0 ? 'eager' : 'lazy';
+    img.src       = photo.src;
+    // Click the photo to open it in the lightbox.
+    img.addEventListener('click', () => openLightbox(valid, i));
+    // Broken image: replace with tasteful placeholder (no browser broken-icon).
     img.onerror = () => {
-      img.style.display = 'none';
-      cap.textContent   = 'Photo not added yet: ' + photo.src;
+      const ph = mkEl('div', 'gallery-placeholder');
+      ph.innerHTML =
+        `<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">` +
+        `<rect x="3" y="3" width="18" height="18" rx="2"/>` +
+        `<circle cx="8.5" cy="8.5" r="1.5"/>` +
+        `<polyline points="21 15 16 10 5 21"/>` +
+        `</svg><span>Photo not yet added</span>`;
+      img.replaceWith(ph);
     };
-    cap.textContent = photo.caption || '';
-    fig.append(img, cap);
-    host.append(fig);
+    frame.appendChild(img);
+    return frame;
+  });
+  frames.forEach(f => viewport.appendChild(f));
+
+  // ── Prev / Next buttons (only rendered when > 1 photo) ────────────────
+  if (total > 1) {
+    const prev = mkEl('button', 'gallery-nav gallery-prev');
+    const next = mkEl('button', 'gallery-nav gallery-next');
+    prev.setAttribute('aria-label', 'Previous photograph');
+    next.setAttribute('aria-label', 'Next photograph');
+    prev.textContent = '‹';
+    next.textContent = '›';
+    prev.addEventListener('click', e => { e.stopPropagation(); navigate(-1); });
+    next.addEventListener('click', e => { e.stopPropagation(); navigate(1);  });
+    stage.append(prev, next);
   }
+
+  // ── Expand button (bottom-right corner, opens lightbox) ───────────────
+  const expandBtn = mkEl('button', 'gallery-expand');
+  expandBtn.setAttribute('aria-label', 'View photograph larger');
+  expandBtn.innerHTML =
+    `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">` +
+    `<path d="M1 5V1h4M8 1h4v4M12 8v4H8M5 12H1V8"/></svg>`;
+  expandBtn.addEventListener('click', e => { e.stopPropagation(); openLightbox(valid, idx); });
+  stage.appendChild(expandBtn);
+
+  // ── Keyboard navigation ───────────────────────────────────────────────
+  // stopPropagation ensures HUD milestone ArrowLeft/Right does not also fire.
+  stage.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  { e.stopPropagation(); e.preventDefault(); navigate(-1); return; }
+    if (e.key === 'ArrowRight') { e.stopPropagation(); e.preventDefault(); navigate(1);  return; }
+    if ((e.key === 'Enter' || e.key === ' ') && e.target === stage) {
+      e.preventDefault(); e.stopPropagation(); openLightbox(valid, idx);
+    }
+  });
+
+  // ── Touch swipe (passive — page can still scroll vertically) ──────────
+  let txStart = 0, txDelta = 0;
+  viewport.addEventListener('touchstart', e => { txStart = e.changedTouches[0].clientX; txDelta = 0; }, { passive: true });
+  viewport.addEventListener('touchmove',  e => { txDelta = e.changedTouches[0].clientX - txStart; }, { passive: true });
+  viewport.addEventListener('touchend',   () => { if (Math.abs(txDelta) > 40) navigate(txDelta < 0 ? 1 : -1); });
+
+  // ── Navigate ──────────────────────────────────────────────────────────
+  function navigate(dir) {
+    if (total <= 1) return;
+    frames[idx].classList.remove('active');
+    idx = (idx + dir + total) % total;
+    frames[idx].classList.add('active');
+    syncGallery();
+  }
+
+  // ── Sync caption / counter / aria-label ───────────────────────────────
+  function syncGallery() {
+    const p = valid[idx];
+    caption.textContent = p.caption || '';
+    if (counter) counter.textContent = `${idx + 1}\u2009/\u2009${total}`;
+    stage.setAttribute('aria-label',
+      total > 1 ? `Photograph ${idx + 1} of ${total}` : 'Photograph viewer');
+  }
+
+  // ── Assemble ──────────────────────────────────────────────────────────
+  stage.insertBefore(viewport, stage.firstChild);
+  if (counter) footer.append(caption, counter);
+  else         footer.appendChild(caption);
+  host.append(stage, footer);
+  syncGallery();
+}
+
+// ── Photo lightbox ─────────────────────────────────────────────────────────
+// Full-screen photograph viewer opened from the gallery.
+// Escape closes the lightbox; ArrowLeft/Right navigate when > 1 photo.
+let _lbPhotos = [], _lbIdx = 0, _lbOpener = null;
+
+function openLightbox(photos, idx) {
+  _lbPhotos = photos;
+  _lbIdx    = idx;
+  _lbOpener = document.activeElement;
+  _lbSync();
+  const lb = $('photoLightbox');
+  lb.removeAttribute('aria-hidden');
+  lb.classList.add('open');
+  $('lbClose').focus();
+}
+
+function closeLightbox() {
+  const lb = $('photoLightbox');
+  lb.classList.remove('open');
+  lb.setAttribute('aria-hidden', 'true');
+  // Return focus to the gallery element that opened the lightbox.
+  if (_lbOpener && document.contains(_lbOpener)) _lbOpener.focus();
+  _lbOpener = null;
+}
+
+function _lbNav(dir) {
+  _lbIdx = (_lbIdx + dir + _lbPhotos.length) % _lbPhotos.length;
+  _lbSync();
+}
+
+function _lbSync() {
+  const photo  = _lbPhotos[_lbIdx];
+  const img    = $('lbImg');
+  img.src = photo.src;
+  img.alt = photo.caption || photo.alt || 'Photograph';
+  $('lbCaption').textContent = photo.caption || '';
+  const multi = _lbPhotos.length > 1;
+  $('lbCounter').textContent = multi ? `${_lbIdx + 1}\u2009/\u2009${_lbPhotos.length}` : '';
+  $('lbPrev').hidden    = !multi;
+  $('lbNext').hidden    = !multi;
+  $('lbCounter').hidden = !multi;
 }
 
 // ── UI: memory panel open / close ────────────────────────────────────────
@@ -876,6 +1142,21 @@ $('continueBtn').addEventListener('click', () => {
 // on desktop where the backdrop covers the full left side) also closes the panel.
 $('panelBackdrop').addEventListener('click', closeModal);
 
+// ── Lightbox listeners ────────────────────────────────────────────────────
+$('lbClose').addEventListener('click', closeLightbox);
+$('lbPrev').addEventListener('click', () => _lbNav(-1));
+$('lbNext').addEventListener('click', () => _lbNav(1));
+// Arrow key navigation inside the lightbox (stop-propagation keeps milestone nav quiet).
+$('photoLightbox').addEventListener('keydown', e => {
+  if (!$('photoLightbox').classList.contains('open')) return;
+  if (e.key === 'ArrowLeft')  { e.stopPropagation(); _lbNav(-1); }
+  if (e.key === 'ArrowRight') { e.stopPropagation(); _lbNav(1);  }
+});
+// Click on the dark backdrop (not on the image or controls) closes the lightbox.
+$('photoLightbox').addEventListener('click', e => {
+  if (e.target === $('photoLightbox')) closeLightbox();
+});
+
 // ── Keyboard navigation (B7) ──────────────────────────────────────────────
 // ArrowRight / ArrowLeft  — next / previous milestone (when not travelling)
 // Enter or Space          — open the current memory panel (when stopped & no modal)
@@ -891,8 +1172,9 @@ addEventListener('keydown', e => {
 
   const modalOpen = $('modalWrap').classList.contains('show');
 
-  // Escape closes the panel regardless of which element inside it has focus.
+  // Escape: lightbox takes priority (close lightbox before closing the panel).
   if (e.key === 'Escape') {
+    if ($('photoLightbox').classList.contains('open')) { e.preventDefault(); closeLightbox(); return; }
     if (modalOpen) { e.preventDefault(); closeModal(); }
     return;
   }
