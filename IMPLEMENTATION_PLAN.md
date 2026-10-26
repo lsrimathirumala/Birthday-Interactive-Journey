@@ -328,6 +328,32 @@ Re-implement from the Phase 3 design notes above, or cherry-pick `02ac0bc` and r
 3. **Dynamic FOV** — narrow FOV slightly when stopped (`62°`), widen during travel (`70°`) for speed sense
 4. **Camera roll on bends** — apply gentle bank angle derived from tangent X change
 
+### Milestone Storytelling Panel ✅ COMPLETE
+
+> **Committed:** `7c8d04a` on `feature/stability-navigation`  
+> **Changed:** `index.html` only (+~170 / −~35 lines)  
+> **Goal:** Transform memory panels into cinematic, readable storytelling experiences without touching the 3D environment.
+
+#### What was implemented
+
+| Area | Detail |
+|------|--------|
+| **Layout** | Centered modal → cinematic side panel (460 px, slides from right on desktop; bottom sheet on mobile ≤899 px) |
+| **Animation** | `translateX(102%)` → `translateX(0)` on open; reverse on close via `visibility:hidden` + 0.5 s transition-delay (avoids `display:none` animation trap) |
+| **Typography** | Georgia/Times serif headings; body 16 px / line-height 1.85; subtitle (was absent) added from `c.subtitle` |
+| **Story paragraphs** | `rawStory.split(/\n{2,}/)` → individual `<p>` per paragraph; no more unbroken text wall |
+| **Telugu** | `Noto Sans Telugu` loaded via Google Fonts; section hidden (`hidden` attr) when `teluguMessage` is empty |
+| **Accessibility** | `role=dialog`, `aria-modal`, `aria-labelledby`; `aria-hidden` toggled on open/close; focus → ✕ on open, → `memoryBtn` on close; `panel.scrollTop = 0` reset |
+| **Reduced motion** | `prefers-reduced-motion: reduce` disables all CSS transitions |
+| **Backdrop** | Desktop: transparent (road visible); mobile: `rgba(7,16,27,.62)` dim; click closes panel |
+| **Buttons** | ✕ close (`id=closeBtn`), `Continue the journey →` (`id=continueBtn`), `Return to Road` (`id=panelReturnBtn`) |
+| **Photos** | `object-fit:cover`; scrollbar hidden; `:empty → display:none` preserved; no upload controls |
+| **3D environment** | Zero changes — road, camera, scenery, lighting all untouched |
+
+#### Assertions: 51 / 51 passed ✓ (1 false-fail was a PowerShell `-and` precedence bug in the test script — verified correct by direct `Contains` check)
+
+---
+
 ### Phase 4 — Visual Enhancement
 
 > Goal: post-processing and atmospheric polish.
@@ -346,7 +372,7 @@ Re-implement from the Phase 3 design notes above, or cherry-pick `02ac0bc` and r
 1. **Add generated future illustrations** to `assets/future/` using prompts in `content.json`
 2. **Add family photos** (web-optimised, 1600 px JPEG) to `assets/photos/` subdirectories
 3. **Populate stop stories** in `content.json` with real (or final placeholder) content
-4. **Telugu font** — load Noto Sans Telugu via Google Fonts for correct script rendering of `teluguMessage` fields
+4. **Telugu font** — ✅ Done (Noto Sans Telugu loaded via Google Fonts in milestone panel)
 5. **Audio** — if ambient track is sourced, wire `audioSrc` to a muted-by-default `<audio>` element with a toggle button
 6. **Final end-to-end test** on physical iOS + Android devices before sharing
 
