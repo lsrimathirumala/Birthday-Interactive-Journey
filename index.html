@@ -227,6 +227,76 @@ button:focus-visible{outline:3px solid #fff}
   .brand{font-size:9px}
   /* Mobile popup: slightly reduced padding and max height */
   .modal{padding:20px;padding-bottom:max(20px,calc(12px + env(safe-area-inset-bottom,0px)));max-height:90dvh;border-radius:18px}
+  /* Mobile letter: match popup mobile sizing */
+  .letter{padding:22px;padding-bottom:max(22px,calc(14px + env(safe-area-inset-bottom,0px)));max-height:92dvh;border-radius:16px}
+}
+
+/* ── Birthday-letter overlay ──────────────────────────────────────────────
+   z-index:7 — sits above milestone popup (z-index:5) but below lightbox
+   (z-index:50). Never open simultaneously with the milestone popup.
+   Same visibility+opacity animation technique as .modalWrap.             */
+.letterWrap{
+  position:fixed;inset:0;z-index:7;
+  display:flex;align-items:center;justify-content:center;
+  padding:clamp(16px,3vw,40px);
+  background:rgba(4,6,12,0);backdrop-filter:blur(12px);
+  visibility:hidden;pointer-events:none;opacity:0;
+  transition:opacity .35s ease,background .35s ease,visibility 0s .35s
+}
+.letterWrap.show{
+  visibility:visible;pointer-events:auto;opacity:1;
+  background:rgba(4,6,12,.9);
+  transition:opacity .35s ease,background .35s ease
+}
+/* Letter article: warmer, darker palette — feels like paper in candlelight */
+.letter{
+  width:min(620px,100%);max-height:90vh;overflow-y:auto;overflow-x:hidden;
+  background:linear-gradient(160deg,#1e1810 0%,#130f07 55%,#0c0906 100%);
+  border:1px solid rgba(255,210,130,.26);border-radius:22px;
+  padding:clamp(28px,5vw,52px) clamp(24px,5vw,48px);
+  display:flex;flex-direction:column;
+  transform:scale(.96) translateY(10px);
+  transition:transform .35s cubic-bezier(.16,1,.3,1);
+  will-change:transform;
+  scrollbar-width:thin;scrollbar-color:rgba(255,195,90,.18) transparent
+}
+.letterWrap.show .letter{transform:scale(1) translateY(0)}
+@media(prefers-reduced-motion:reduce){.letter,.letterWrap{transition:none}}
+
+/* ── Letter header ── */
+.letter-header{text-align:center;margin-bottom:22px}
+.letter-ornament{font-size:20px;line-height:1;margin-bottom:12px;color:rgba(255,205,110,.42);letter-spacing:.18em}
+.letter-title{font:400 clamp(22px,3.5vw,32px)/1.1 Georgia,'Times New Roman',serif;letter-spacing:-.02em;color:var(--cream);margin:0 0 7px}
+.letter-dateline{font:italic 13px/1.5 Georgia,serif;color:rgba(255,230,180,.4);margin:0}
+
+/* ── Centred gold rule ── */
+.letter-rule{
+  width:60px;height:1px;border:none;margin:0 auto 28px;
+  background:linear-gradient(90deg,transparent,rgba(255,210,120,.7),transparent)
+}
+
+/* ── Letter paragraphs ── */
+.letter-body{display:flex;flex-direction:column;gap:20px;margin-bottom:24px}
+.letter-body p{
+  font-size:clamp(15px,1.6vw,17px);line-height:1.92;color:#e8d8b5;margin:0;
+  font-family:Georgia,'Times New Roman',serif
+}
+
+/* ── Telugu closing line ── */
+.letter-telugu{
+  border-top:1px solid rgba(255,205,110,.12);padding-top:16px;margin-bottom:20px;
+  font-size:clamp(16px,1.8vw,20px);line-height:1.9;color:#ffdc9d;text-align:center;
+  font-family:'Noto Sans Telugu','Potti Sreeramulu',system-ui,sans-serif
+}
+
+/* ── Signature ── */
+.letter-sig-wrap{text-align:right;margin-bottom:8px}
+.letter-sig{font:italic clamp(13px,1.5vw,16px)/1.5 Georgia,serif;color:rgba(255,215,150,.45)}
+
+/* ── Letter action buttons ── */
+.letter-actions{
+  display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;
+  margin-top:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,.06)
 }
 </style>
 </head>
@@ -313,7 +383,45 @@ button:focus-visible{outline:3px solid #fff}
     <!-- Action buttons ──────────────────────────────────────────────────── -->
     <div class="modal-actions">
       <button id="closeBtn">Return to Road</button>
+      <!-- letterBtn: visible only at the final stop (openModal shows/hides it) -->
+      <button id="letterBtn" class="primary" hidden>Read Your Birthday Letter ❤️</button>
+      <!-- continueBtn: hidden at the final stop; letter overlay has Restart instead -->
       <button class="primary" id="continueBtn">Continue the journey →</button>
+    </div>
+  </article>
+</div>
+
+<!--
+  Birthday-letter overlay — separate from the milestone popup (z-index 7).
+  Opened by #letterBtn on Stop 5. Closing returns to the final milestone.
+  aria-hidden managed by openLetter / closeLetter.
+-->
+<div class="letterWrap" id="letterWrap"
+     role="dialog" aria-modal="true" aria-labelledby="ltrTitle" aria-hidden="true">
+  <article class="letter">
+    <!-- Header -->
+    <div class="letter-header">
+      <div class="letter-ornament" aria-hidden="true">✦ &nbsp; ✦ &nbsp; ✦</div>
+      <h2 class="letter-title" id="ltrTitle">A Birthday Letter</h2>
+      <p class="letter-dateline">For Nannagaru &middot; 57th Birthday</p>
+    </div>
+    <hr class="letter-rule" aria-hidden="true">
+
+    <!-- Letter body (paragraphs injected by openLetter) -->
+    <div class="letter-body" id="ltrBody"></div>
+
+    <!-- Optional Telugu closing (hidden when empty) -->
+    <div class="letter-telugu" id="ltrTelugu" hidden aria-label="Message in Telugu"></div>
+
+    <!-- Signature -->
+    <div class="letter-sig-wrap" aria-hidden="true">
+      <span class="letter-sig">With all my love ❤️</span>
+    </div>
+
+    <!-- Navigation -->
+    <div class="letter-actions">
+      <button id="ltrReturnBtn">← Return to Final Milestone</button>
+      <button class="primary" id="ltrRestartBtn">Restart Journey ↩</button>
     </div>
   </article>
 </div>
@@ -1031,15 +1139,11 @@ function openModal() {
   $('mSubtitle').textContent = c.subtitle || '';
 
   // ── Story body: split on blank lines → individual <p> elements ────────
-  // Using <p> per paragraph gives proper semantic spacing and avoids a wall
-  // of text. pre-line whitespace-mode is replaced by explicit DOM structure.
-  const rawStory = isFinal
-    ? s.story + '\n\n' + content.site.finalLetter
-    : s.story;
-
+  // Note: for the final stop, the birthday letter lives in its own overlay
+  // (opened by #letterBtn). Only s.story is shown here.
   const storyEl = $('mBody');
   storyEl.innerHTML = '';
-  rawStory.split(/\n{2,}/).forEach(para => {
+  (s.story || '').split(/\n{2,}/).forEach(para => {
     const trimmed = para.trim();
     if (!trimmed) return;
     const p = document.createElement('p');
@@ -1048,10 +1152,9 @@ function openModal() {
   });
 
   // ── Telugu message: hide section when empty ───────────────────────────
+  // finalTelugu is shown in the letter overlay, not here.
   const teluguEl = $('mTelugu');
-  const teluguText = isFinal
-    ? (content.site.finalTelugu || s.teluguMessage || '').trim()
-    : (s.teluguMessage || '').trim();
+  const teluguText = (s.teluguMessage || '').trim();
   if (teluguText) {
     teluguEl.textContent = teluguText;
     teluguEl.removeAttribute('hidden');
@@ -1059,6 +1162,14 @@ function openModal() {
     teluguEl.textContent = '';
     teluguEl.setAttribute('hidden', '');
   }
+
+  // ── Final-stop letter button / continue button toggle ─────────────────
+  // On the final stop: show the letter CTA, hide the "continue" wrap-around.
+  // On all other stops: hide letter button, show continue.
+  const letterBtn  = $('letterBtn');
+  const continueBtn = $('continueBtn');
+  if (letterBtn)   letterBtn.hidden   = !isFinal;
+  if (continueBtn) continueBtn.hidden = isFinal;
 
   // ── Photo galleries ────────────────────────────────────────────────────
   fillGallery('photoGallery', s.photos || []);
@@ -1089,7 +1200,71 @@ function closeModal() {
   $('memoryBtn').focus();
 }
 
-// ── Button listeners ──────────────────────────────────────────────────────
+// ── Birthday-letter overlay ───────────────────────────────────────────────
+// openLetter: closes the milestone popup gracefully, then reveals the letter.
+// closeLetter: hides the letter and re-opens the final milestone popup so the
+//              visitor can read it again or use Restart.
+// restartJourney: closes the letter without returning to the popup, travels
+//                 the camera back to Stop 1.
+
+function openLetter() {
+  // 1. Close the milestone popup (without returning focus to memoryBtn).
+  const modalWrap = $('modalWrap');
+  modalWrap.classList.remove('show');
+  modalWrap.setAttribute('aria-hidden', 'true');
+
+  // 2. Populate letter body from content.json (never hardcoded).
+  const body = $('ltrBody');
+  body.innerHTML = '';
+  (content.site.finalLetter || '').split(/\n{2,}/).forEach(para => {
+    const trimmed = para.trim();
+    if (!trimmed) return;
+    const p = document.createElement('p');
+    p.textContent = trimmed;
+    body.appendChild(p);
+  });
+
+  // 3. Optional Telugu closing line (finalTelugu in content.json).
+  const teluguEl = $('ltrTelugu');
+  const telugu = (content.site.finalTelugu || '').trim();
+  if (telugu) {
+    teluguEl.textContent = telugu;
+    teluguEl.removeAttribute('hidden');
+  } else {
+    teluguEl.textContent = '';
+    teluguEl.setAttribute('hidden', '');
+  }
+
+  // 4. Show letter overlay.
+  const wrap = $('letterWrap');
+  wrap.setAttribute('aria-hidden', 'false');
+  wrap.classList.add('show');
+  const ltr = wrap.querySelector('.letter');
+  if (ltr) ltr.scrollTop = 0;
+
+  // 5. Move focus to the first interactive element in the letter.
+  $('ltrReturnBtn').focus();
+}
+
+function closeLetter() {
+  // Hide the letter overlay.
+  const wrap = $('letterWrap');
+  wrap.classList.remove('show');
+  wrap.setAttribute('aria-hidden', 'true');
+  // Re-open the final milestone popup (current remains at the last stop).
+  openModal();
+}
+
+function restartJourney() {
+  // Close letter without reopening the popup, then travel to Stop 1.
+  const wrap = $('letterWrap');
+  wrap.classList.remove('show');
+  wrap.setAttribute('aria-hidden', 'true');
+  goTo(0);
+  // Return focus to the HUD control bar so keyboard users can continue.
+  $('memoryBtn').focus();
+}
+
 // ── Button listeners ──────────────────────────────────────────────────────
 $('nextBtn').addEventListener('click', () =>
   goTo(current === chapters.length - 1 ? 0 : current + 1)
@@ -1100,6 +1275,9 @@ $('memoryBtn').addEventListener('click', openModal);
 // Popup close: "Return to Road" button.
 $('closeBtn').addEventListener('click', closeModal);
 
+// Letter CTA: opens the birthday-letter overlay (final stop only).
+$('letterBtn').addEventListener('click', openLetter);
+
 // Continue: closes popup then advances to the next stop (wraps at end).
 $('continueBtn').addEventListener('click', () => {
   closeModal();
@@ -1109,6 +1287,18 @@ $('continueBtn').addEventListener('click', () => {
 // Clicking the dark backdrop (outside the popup article) closes the popup.
 $('modalWrap').addEventListener('click', e => {
   if (e.target === $('modalWrap')) closeModal();
+});
+
+// ── Letter overlay button listeners ───────────────────────────────────────
+// "← Return to Final Milestone": close letter, re-open milestone popup.
+$('ltrReturnBtn').addEventListener('click', closeLetter);
+
+// "Restart Journey ↩": close letter, travel camera back to Stop 1.
+$('ltrRestartBtn').addEventListener('click', restartJourney);
+
+// Clicking the dark backdrop outside the letter article closes the letter.
+$('letterWrap').addEventListener('click', e => {
+  if (e.target === $('letterWrap')) closeLetter();
 });
 
 // ── Lightbox listeners ────────────────────────────────────────────────────
@@ -1139,12 +1329,14 @@ addEventListener('keydown', e => {
   const tag = e.target.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
 
-  const modalOpen = $('modalWrap').classList.contains('show');
+  const modalOpen  = $('modalWrap').classList.contains('show');
+  const letterOpen = $('letterWrap').classList.contains('show');
 
-  // Escape: lightbox takes priority (close lightbox before closing the panel).
+  // Escape priority: lightbox → letter → milestone popup.
   if (e.key === 'Escape') {
     if ($('photoLightbox').classList.contains('open')) { e.preventDefault(); closeLightbox(); return; }
-    if (modalOpen) { e.preventDefault(); closeModal(); }
+    if (letterOpen)  { e.preventDefault(); closeLetter();  return; }
+    if (modalOpen)   { e.preventDefault(); closeModal();   return; }
     return;
   }
 
@@ -1171,7 +1363,7 @@ addEventListener('keydown', e => {
 const raycaster = new THREE.Raycaster();
 const pointer   = new THREE.Vector2();
 canvas.addEventListener('pointerup', e => {
-  if (travelling || $('modalWrap').classList.contains('show')) return;
+  if (travelling || $('modalWrap').classList.contains('show') || $('letterWrap').classList.contains('show')) return;
   pointer.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
   raycaster.setFromCamera(pointer, camera);
   const hits = raycaster.intersectObjects(markers.map(m => m.ring));
