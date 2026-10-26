@@ -9,34 +9,39 @@
     "audioSrc": "",
     "futureScenes": [
       {
-        "id": "family-trips",
-        "title": "Future family trips",
-        "src": "assets/future/family-trips.jpg",
-        "prompt": "Cinematic aspirational illustration of a family vacation in a peaceful mountain valley at golden hour, wide scenic landscape, no identifiable real people, natural warm light, photorealistic, 16:9"
+        "id": "family-adventures",
+        "title": "Family Adventures",
+        "src": "assets/future/family-adventures.svg",
+        "caption": "Scenic holidays, mountain trips, and time exploring together.",
+        "enabled": true
       },
       {
-        "id": "relax",
-        "title": "Time to relax",
-        "src": "assets/future/relax.jpg",
-        "prompt": "Quiet sunlit veranda overlooking misty green hills, steaming cup of tea on wooden table, tranquil unhurried morning, cinematic natural light, 16:9"
+        "id": "unhurried-mornings",
+        "title": "Unhurried Mornings",
+        "src": "assets/future/unhurried-mornings.svg",
+        "caption": "Peaceful mornings, beautiful views, tea, and time to simply be.",
+        "enabled": true
       },
       {
-        "id": "hobbies",
-        "title": "New hobbies",
-        "src": "assets/future/hobbies.jpg",
-        "prompt": "Inviting workshop table with sketchbook, camera, books and gardening tools by a sunny window, hopeful sense of discovery, cinematic photograph, 16:9"
+        "id": "rediscovering-interests",
+        "title": "Rediscovering Interests",
+        "src": "assets/future/rediscovering-interests.svg",
+        "caption": "Hobbies, creativity, and the things that make you happy.",
+        "enabled": true
       },
       {
-        "id": "celebrations",
-        "title": "More family memories",
-        "src": "assets/future/celebrations.jpg",
-        "prompt": "Warm Indian family festival celebration with diyas and festive decorations, silhouettes rather than recognizable faces, hopeful candid atmosphere, cinematic, 16:9"
+        "id": "more-family-memories",
+        "title": "More Family Memories",
+        "src": "assets/future/more-family-memories.svg",
+        "caption": "Celebrations, festivals, and everyday moments together.",
+        "enabled": true
       },
       {
         "id": "years-ahead",
-        "title": "The years ahead",
-        "src": "assets/future/years-ahead.jpg",
-        "prompt": "Golden sunrise over winding mountain road stretching toward an open horizon, warm and hopeful, realistic cinematic landscape, 16:9"
+        "title": "The Years Ahead",
+        "src": "assets/future/years-ahead.svg",
+        "caption": "Freedom, curiosity, and meaningful time with loved ones.",
+        "enabled": true
       }
     ]
   },
@@ -95,7 +100,7 @@
       "story": "You deserve unhurried mornings, new interests, time with family, and all the small joys that make life beautiful.",
       "teluguMessage": "",
       "photos": [],
-      "futureScene": "",
+      "futureScene": "unhurried-mornings",
       "sceneType": "renewal",
       "roadPosition": 0.63,
       "markerLabel": "A new chapter",
@@ -110,7 +115,7 @@
       "story": "There are still places to explore, celebrations to share, hobbies to discover, and so many memories for us to make together.",
       "teluguMessage": "",
       "photos": [],
-      "futureScene": "years-ahead",
+      "futureScene": "all",
       "sceneType": "future",
       "roadPosition": 0.88,
       "markerLabel": "The golden horizon",

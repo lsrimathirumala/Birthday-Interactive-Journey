@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a3a5c"/>
+      <stop offset="55%" stop-color="#e8853a"/>
+      <stop offset="100%" stop-color="#f5c06a"/>
+    </linearGradient>
+    <linearGradient id="mtn-far" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2d5c8a"/>
+      <stop offset="100%" stop-color="#4a7faa"/>
+    </linearGradient>
+    <linearGradient id="mtn-mid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e4a1e"/>
+      <stop offset="100%" stop-color="#3a7a3a"/>
+    </linearGradient>
+    <linearGradient id="valley" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a8c4a"/>
+      <stop offset="100%" stop-color="#2a5c2a"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="75%" cy="35%" r="12%">
+      <stop offset="0%" stop-color="#ffe080" stop-opacity="1"/>
+      <stop offset="60%" stop-color="#f5a020" stop-opacity=".6"/>
+      <stop offset="100%" stop-color="#e87020" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Sky + golden-hour glow -->
+  <rect width="800" height="600" fill="url(#sky)"/>
+  <ellipse cx="600" cy="210" rx="120" ry="80" fill="url(#sun)"/>
+
+  <!-- Snow peaks (far) -->
+  <polygon points="100,320 160,200 220,320" fill="#c8dce8" opacity=".9"/>
+  <polygon points="80,320 100,240 130,320" fill="#b8ccd8" opacity=".8"/>
+  <polygon points="200,320 260,190 330,320" fill="#c8dce8" opacity=".85"/>
+  <polygon points="320,320 380,210 450,320" fill="#d0e0ec" opacity=".8"/>
+  <polygon points="520,320 580,195 650,320" fill="#c0d8e8" opacity=".9"/>
+  <polygon points="650,320 700,220 760,320" fill="#b8cce0" opacity=".85"/>
+
+  <!-- Mid-range forested hills -->
+  <ellipse cx="150" cy="370" rx="180" ry="90" fill="url(#mtn-mid)"/>
+  <ellipse cx="380" cy="360" rx="220" ry="100" fill="#2a5e2a"/>
+  <ellipse cx="650" cy="375" rx="200" ry="85" fill="url(#mtn-mid)"/>
+
+  <!-- Valley floor -->
+  <ellipse cx="400" cy="500" rx="500" ry="160" fill="url(#valley)"/>
+
+  <!-- Winding path through valley -->
+  <path d="M320,600 Q340,520 370,490 Q400,460 420,480 Q450,500 470,470 Q490,440 510,430" stroke="#c8a84a" stroke-width="5" fill="none" stroke-linecap="round" opacity=".85"/>
+  <path d="M320,600 Q340,520 370,490 Q400,460 420,480 Q450,500 470,470 Q490,440 510,430" stroke="#ffe090" stroke-width="2" fill="none" stroke-linecap="round" opacity=".5"/>
+
+  <!-- Pine trees (silhouette)  left group -->
+  <g fill="#174017" opacity=".95">
+    <polygon points="60,480 75,420 90,480"/>
+    <polygon points="55,500 75,430 95,500"/>
+    <polygon points="90,475 103,422 116,475"/>
+    <polygon points="110,485 122,435 134,485"/>
+  </g>
+
+  <!-- Pine trees  right group -->
+  <g fill="#174017" opacity=".9">
+    <polygon points="680,475 693,420 706,475"/>
+    <polygon points="700,485 715,428 730,485"/>
+    <polygon points="720,470 733,415 746,470"/>
+  </g>
+
+  <!-- Small figure silhouettes on the path -->
+  <g fill="#0c1c0c" opacity=".85">
+    <!-- Adult 1 -->
+    <ellipse cx="390" cy="487" rx="5" ry="5"/>
+    <line x1="390" y1="492" x2="390" y2="508" stroke="#0c1c0c" stroke-width="3"/>
+    <line x1="390" y1="496" x2="384" y2="504" stroke="#0c1c0c" stroke-width="2"/>
+    <line x1="390" y1="496" x2="396" y2="504" stroke="#0c1c0c" stroke-width="2"/>
+    <line x1="390" y1="508" x2="385" y2="518" stroke="#0c1c0c" stroke-width="2"/>
+    <line x1="390" y1="508" x2="395" y2="518" stroke="#0c1c0c" stroke-width="2"/>
+    <!-- Adult 2 -->
+    <ellipse cx="406" cy="486" rx="4.5" ry="4.5"/>
+    <line x1="406" y1="490" x2="406" y2="506" stroke="#0c1c0c" stroke-width="2.5"/>
+    <line x1="406" y1="494" x2="400" y2="502" stroke="#0c1c0c" stroke-width="2"/>
+    <line x1="406" y1="494" x2="412" y2="502" stroke="#0c1c0c" stroke-width="2"/>
+    <line x1="406" y1="506" x2="401" y2="516" stroke="#0c1c0c" stroke-width="2"/>
+    <line x1="406" y1="506" x2="411" y2="516" stroke="#0c1c0c" stroke-width="2"/>
+    <!-- Child (shorter) -->
+    <ellipse cx="418" cy="490" rx="3.5" ry="3.5"/>
+    <line x1="418" y1="493" x2="418" y2="505" stroke="#0c1c0c" stroke-width="2"/>
+    <line x1="418" y1="497" x2="413" y2="503" stroke="#0c1c0c" stroke-width="2"/>
+    <line x1="418" y1="497" x2="423" y2="503" stroke="#0c1c0c" stroke-width="2"/>
+    <line x1="418" y1="505" x2="414" y2="514" stroke="#0c1c0c" stroke-width="2"/>
+    <line x1="418" y1="505" x2="422" y2="514" stroke="#0c1c0c" stroke-width="2"/>
+  </g>
+
+  <!-- Golden-hour light rays -->
+  <g opacity=".12" filter="url(#glow)">
+    <line x1="600" y1="210" x2="200" y2="500" stroke="#ffdf80" stroke-width="30"/>
+    <line x1="600" y1="210" x2="400" y2="550" stroke="#ffdf80" stroke-width="20"/>
+    <line x1="600" y1="210" x2="700" y2="480" stroke="#ffdf80" stroke-width="15"/>
+  </g>
+
+  <!-- Caption bar -->
+  <rect x="0" y="556" width="800" height="44" fill="#0c1a0c" opacity=".72"/>
+  <text x="400" y="583" text-anchor="middle" font-family="Georgia,'Times New Roman',serif"
+        font-size="16" fill="#ffd98a" letter-spacing="0.06em">Family Adventures</text>
+</svg>

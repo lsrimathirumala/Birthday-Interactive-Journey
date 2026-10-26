@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="dawn-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2c4a"/>
+      <stop offset="40%" stop-color="#4a6c90"/>
+      <stop offset="75%" stop-color="#e8a060"/>
+      <stop offset="100%" stop-color="#f5d080"/>
+    </linearGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d4e8f0" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#d4e8f0" stop-opacity=".0"/>
+    </linearGradient>
+    <radialGradient id="sunrise" cx="50%" cy="45%" r="20%">
+      <stop offset="0%" stop-color="#ffe8a0"/>
+      <stop offset="50%" stop-color="#f5b040" stop-opacity=".5"/>
+      <stop offset="100%" stop-color="#e88020" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur-soft">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="800" height="600" fill="url(#dawn-sky)"/>
+  <!-- Sun glow on horizon -->
+  <ellipse cx="400" cy="275" rx="180" ry="80" fill="url(#sunrise)"/>
+  <ellipse cx="400" cy="300" rx="18" ry="18" fill="#ffe8b0" opacity=".95"/>
+
+  <!-- Misty hills (layered) -->
+  <ellipse cx="200" cy="330" rx="280" ry="100" fill="#6a9a8a" opacity=".5"/>
+  <ellipse cx="600" cy="320" rx="300" ry="110" fill="#6a9a8a" opacity=".45"/>
+  <ellipse cx="400" cy="350" rx="400" ry="130" fill="#5a8878" opacity=".6"/>
+
+  <!-- Mist layers -->
+  <rect x="0" y="280" width="800" height="120" fill="url(#mist)"/>
+  <ellipse cx="200" cy="360" rx="250" ry="50" fill="#d8eef4" opacity=".35"/>
+  <ellipse cx="600" cy="350" rx="250" ry="50" fill="#d8eef4" opacity=".3"/>
+
+  <!-- Ground / garden floor -->
+  <ellipse cx="400" cy="540" rx="500" ry="130" fill="#3a6050"/>
+
+  <!-- Veranda / porch structure -->
+  <!-- Floor boards -->
+  <rect x="180" y="440" width="440" height="120" rx="4" fill="#8b6344"/>
+  <!-- Pillar left -->
+  <rect x="195" y="340" width="18" height="210" rx="4" fill="#7a5434"/>
+  <!-- Pillar right -->
+  <rect x="587" y="340" width="18" height="210" rx="4" fill="#7a5434"/>
+  <!-- Overhead beam -->
+  <rect x="180" y="338" width="440" height="16" rx="4" fill="#6a4424"/>
+  <!-- Railing -->
+  <rect x="195" y="430" width="410" height="10" rx="3" fill="#6a4424"/>
+  <!-- Railing posts -->
+  <g fill="#7a5434">
+    <rect x="235" y="440" width="6" height="60" rx="2"/>
+    <rect x="270" y="440" width="6" height="60" rx="2"/>
+    <rect x="305" y="440" width="6" height="60" rx="2"/>
+    <rect x="340" y="440" width="6" height="60" rx="2"/>
+    <rect x="375" y="440" width="6" height="60" rx="2"/>
+    <rect x="410" y="440" width="6" height="60" rx="2"/>
+    <rect x="445" y="440" width="6" height="60" rx="2"/>
+    <rect x="480" y="440" width="6" height="60" rx="2"/>
+    <rect x="515" y="440" width="6" height="60" rx="2"/>
+    <rect x="550" y="440" width="6" height="60" rx="2"/>
+  </g>
+
+  <!-- Wicker chair (silhouette) -->
+  <g fill="#4a2e14" opacity=".88">
+    <!-- Seat -->
+    <rect x="310" y="415" width="80" height="40" rx="6"/>
+    <!-- Back -->
+    <rect x="308" y="375" width="84" height="44" rx="6"/>
+    <!-- Legs -->
+    <rect x="315" y="455" width="8" height="25" rx="3"/>
+    <rect x="377" y="455" width="8" height="25" rx="3"/>
+    <!-- Arm rests -->
+    <rect x="305" y="405" width="14" height="14" rx="3"/>
+    <rect x="381" y="405" width="14" height="14" rx="3"/>
+  </g>
+
+  <!-- Side table -->
+  <rect x="395" y="420" width="55" height="40" rx="4" fill="#5a3520" opacity=".85"/>
+  <rect x="390" y="416" width="65" height="8" rx="3" fill="#6a4430" opacity=".9"/>
+
+  <!-- Tea cup on table -->
+  <ellipse cx="423" cy="416" rx="16" ry="7" fill="#e8d0a8" opacity=".9"/>
+  <rect x="409" y="409" width="28" height="14" rx="5" fill="#d8b888"/>
+  <path d="M437,413 Q450,413 450,420 Q450,425 437,425" fill="none" stroke="#d8b888" stroke-width="3" stroke-linecap="round"/>
+  <!-- Steam wisps -->
+  <path d="M415,406 Q412,398 415,390" fill="none" stroke="#e0dcd0" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+  <path d="M422,404 Q419,395 422,386" fill="none" stroke="#e0dcd0" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+  <path d="M429,406 Q432,397 429,388" fill="none" stroke="#e0dcd0" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+
+  <!-- Small pot plant on railing -->
+  <rect x="540" y="420" width="22" height="18" rx="4" fill="#7a4828"/>
+  <ellipse cx="551" cy="419" rx="12" ry="6" fill="#6a3818"/>
+  <path d="M551,419 Q548,400 540,388 M551,419 Q554,402 562,392 M551,419 Q551,404 551,396" fill="none" stroke="#3a8040" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Misty hills horizon -->
+  <ellipse cx="400" cy="290" rx="500" ry="60" fill="#a0c8b8" opacity=".25"/>
+
+  <!-- Birds (two simple v-shapes in distance) -->
+  <path d="M320,230 Q325,225 330,230" fill="none" stroke="#2a4060" stroke-width="2" stroke-linecap="round"/>
+  <path d="M345,220 Q350,215 355,220" fill="none" stroke="#2a4060" stroke-width="2" stroke-linecap="round"/>
+  <path d="M365,235 Q370,230 375,235" fill="none" stroke="#2a4060" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Caption bar -->
+  <rect x="0" y="556" width="800" height="44" fill="#0c1820" opacity=".72"/>
+  <text x="400" y="583" text-anchor="middle" font-family="Georgia,'Times New Roman',serif"
+        font-size="16" fill="#ffd98a" letter-spacing="0.06em">Unhurried Mornings</text>
+</svg>

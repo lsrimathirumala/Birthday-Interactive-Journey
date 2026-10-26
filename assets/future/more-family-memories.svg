@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <radialGradient id="warm-room" cx="50%" cy="60%" r="55%">
+      <stop offset="0%" stop-color="#3a1e08"/>
+      <stop offset="70%" stop-color="#1a0e04"/>
+      <stop offset="100%" stop-color="#080408"/>
+    </radialGradient>
+    <radialGradient id="diya-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffe880" stop-opacity="1"/>
+      <stop offset="40%" stop-color="#ff9020" stop-opacity=".7"/>
+      <stop offset="100%" stop-color="#cc4000" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="diya-glow-s" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffe880" stop-opacity=".9"/>
+      <stop offset="50%" stop-color="#ff9020" stop-opacity=".4"/>
+      <stop offset="100%" stop-color="#cc4000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="flame-blur">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Deep warm background -->
+  <rect width="800" height="600" fill="url(#warm-room)"/>
+
+  <!-- Faint decorative arch / doorway -->
+  <path d="M150,600 L150,200 Q150,100 300,100 Q450,100 450,200 L450,600" fill="none" stroke="#8a4020" stroke-width="3" opacity=".3"/>
+
+  <!-- Rangoli pattern on floor (geometric) -->
+  <!-- Outer ring -->
+  <circle cx="400" cy="480" r="90" fill="none" stroke="#d06020" stroke-width="2.5" opacity=".5"/>
+  <circle cx="400" cy="480" r="70" fill="none" stroke="#e08030" stroke-width="2" opacity=".45"/>
+  <!-- Petal shapes -->
+  <g fill="none" stroke="#cc5010" stroke-width="2" opacity=".4">
+    <ellipse cx="400" cy="410" rx="16" ry="32"/>
+    <ellipse cx="400" cy="410" rx="16" ry="32" transform="rotate(45 400 480)"/>
+    <ellipse cx="400" cy="410" rx="16" ry="32" transform="rotate(90 400 480)"/>
+    <ellipse cx="400" cy="410" rx="16" ry="32" transform="rotate(135 400 480)"/>
+    <ellipse cx="400" cy="410" rx="16" ry="32" transform="rotate(180 400 480)"/>
+    <ellipse cx="400" cy="410" rx="16" ry="32" transform="rotate(225 400 480)"/>
+    <ellipse cx="400" cy="410" rx="16" ry="32" transform="rotate(270 400 480)"/>
+    <ellipse cx="400" cy="410" rx="16" ry="32" transform="rotate(315 400 480)"/>
+  </g>
+  <!-- Inner dot pattern -->
+  <circle cx="400" cy="480" r="18" fill="#d04010" opacity=".3"/>
+  <circle cx="400" cy="480" r="6" fill="#f07040" opacity=".4"/>
+
+  <!-- DIYA ROW  arranged in a gentle arc along the floor -->
+  <!-- Helper macro: diya = clay bowl + flame + glow -->
+
+  <!-- Diya 1 (far left) -->
+  <ellipse cx="130" cy="520" rx="55" ry="22" fill="#cc7720" opacity=".18"/>
+  <path d="M106,520 Q130,505 154,520 Q148,530 130,532 Q112,530 106,520Z" fill="#b85a18"/>
+  <ellipse cx="130" cy="519" rx="18" ry="7" fill="#d4720a"/>
+  <path d="M130,518 Q126,500 130,487 Q134,500 130,518Z" fill="#ffdd60" opacity=".95" filter="url(#flame-blur)"/>
+  <ellipse cx="130" cy="490" rx="22" ry="22" fill="url(#diya-glow-s)" opacity=".7"/>
+
+  <!-- Diya 2 -->
+  <ellipse cx="215" cy="512" rx="55" ry="22" fill="#cc7720" opacity=".2"/>
+  <path d="M191,512 Q215,497 239,512 Q233,522 215,524 Q197,522 191,512Z" fill="#b85a18"/>
+  <ellipse cx="215" cy="511" rx="18" ry="7" fill="#d4720a"/>
+  <path d="M215,510 Q211,492 215,479 Q219,492 215,510Z" fill="#ffdd60" opacity=".95" filter="url(#flame-blur)"/>
+  <ellipse cx="215" cy="482" rx="28" ry="28" fill="url(#diya-glow-s)" opacity=".8"/>
+
+  <!-- Diya 3 (larger, centre-left) -->
+  <ellipse cx="310" cy="508" rx="65" ry="26" fill="#cc7720" opacity=".25"/>
+  <path d="M282,508 Q310,492 338,508 Q331,519 310,521 Q289,519 282,508Z" fill="#c06018"/>
+  <ellipse cx="310" cy="507" rx="20" ry="8" fill="#dc7810"/>
+  <path d="M310,505 Q305,485 310,470 Q315,485 310,505Z" fill="#ffee80" opacity=".98" filter="url(#flame-blur)"/>
+  <ellipse cx="310" cy="472" rx="36" ry="36" fill="url(#diya-glow)" opacity=".85"/>
+
+  <!-- Diya 4 (centre, largest, most prominent) -->
+  <ellipse cx="400" cy="505" rx="75" ry="28" fill="#dd8820" opacity=".3"/>
+  <path d="M368,505 Q400,487 432,505 Q424,517 400,520 Q376,517 368,505Z" fill="#c86020"/>
+  <ellipse cx="400" cy="504" rx="23" ry="9" fill="#e07a12"/>
+  <path d="M400,502 Q394,478 400,461 Q406,478 400,502Z" fill="#ffee80" opacity=".98" filter="url(#flame-blur)"/>
+  <ellipse cx="400" cy="463" rx="44" ry="44" fill="url(#diya-glow)" opacity=".9"/>
+
+  <!-- Diya 5 (centre-right) -->
+  <ellipse cx="490" cy="508" rx="65" ry="26" fill="#cc7720" opacity=".25"/>
+  <path d="M462,508 Q490,492 518,508 Q511,519 490,521 Q469,519 462,508Z" fill="#c06018"/>
+  <ellipse cx="490" cy="507" rx="20" ry="8" fill="#dc7810"/>
+  <path d="M490,505 Q485,485 490,470 Q495,485 490,505Z" fill="#ffee80" opacity=".98" filter="url(#flame-blur)"/>
+  <ellipse cx="490" cy="472" rx="36" ry="36" fill="url(#diya-glow)" opacity=".85"/>
+
+  <!-- Diya 6 -->
+  <ellipse cx="585" cy="512" rx="55" ry="22" fill="#cc7720" opacity=".2"/>
+  <path d="M561,512 Q585,497 609,512 Q603,522 585,524 Q567,522 561,512Z" fill="#b85a18"/>
+  <ellipse cx="585" cy="511" rx="18" ry="7" fill="#d4720a"/>
+  <path d="M585,510 Q581,492 585,479 Q589,492 585,510Z" fill="#ffdd60" opacity=".95" filter="url(#flame-blur)"/>
+  <ellipse cx="585" cy="482" rx="28" ry="28" fill="url(#diya-glow-s)" opacity=".8"/>
+
+  <!-- Diya 7 (far right) -->
+  <ellipse cx="670" cy="520" rx="55" ry="22" fill="#cc7720" opacity=".18"/>
+  <path d="M646,520 Q670,505 694,520 Q688,530 670,532 Q652,530 646,520Z" fill="#b85a18"/>
+  <ellipse cx="670" cy="519" rx="18" ry="7" fill="#d4720a"/>
+  <path d="M670,518 Q666,500 670,487 Q674,500 670,518Z" fill="#ffdd60" opacity=".95" filter="url(#flame-blur)"/>
+  <ellipse cx="670" cy="490" rx="22" ry="22" fill="url(#diya-glow-s)" opacity=".7"/>
+
+  <!-- Marigold garland (decorative string between top) -->
+  <path d="M60,180 Q160,210 260,180 Q360,150 460,180 Q560,210 660,180 Q720,162 740,170" fill="none" stroke="#e09020" stroke-width="3" opacity=".55"/>
+  <!-- Flowers on garland -->
+  <g fill="#f0a030" opacity=".7">
+    <circle cx="110" cy="195" r="10"/>
+    <circle cx="160" cy="186" r="9"/>
+    <circle cx="210" cy="192" r="11"/>
+    <circle cx="260" cy="180" r="9"/>
+    <circle cx="310" cy="186" r="10"/>
+    <circle cx="360" cy="165" r="11"/>
+    <circle cx="410" cy="178" r="9"/>
+    <circle cx="460" cy="180" r="12"/>
+    <circle cx="510" cy="195" r="10"/>
+    <circle cx="560" cy="185" r="9"/>
+    <circle cx="610" cy="176" r="11"/>
+    <circle cx="660" cy="180" r="9"/>
+    <circle cx="710" cy="172" r="10"/>
+  </g>
+  <!-- Flower inner detail -->
+  <g fill="#f8c848" opacity=".8">
+    <circle cx="110" cy="195" r="5"/>
+    <circle cx="210" cy="192" r="5"/>
+    <circle cx="360" cy="165" r="6"/>
+    <circle cx="460" cy="180" r="6"/>
+    <circle cx="560" cy="185" r="5"/>
+    <circle cx="660" cy="180" r="5"/>
+  </g>
+
+  <!-- Warm ambient glow on ceiling from all diyas -->
+  <ellipse cx="400" cy="300" rx="380" ry="200" fill="#c85010" opacity=".06"/>
+
+  <!-- Silhouette of hands reaching toward centre diya (abstract, no faces) -->
+  <path d="M310,505 Q320,490 335,480 Q345,475 350,480" fill="none" stroke="#1a0c04" stroke-width="8" stroke-linecap="round" opacity=".6"/>
+  <path d="M490,505 Q480,490 465,480 Q455,475 450,480" fill="none" stroke="#1a0c04" stroke-width="8" stroke-linecap="round" opacity=".6"/>
+
+  <!-- Caption bar -->
+  <rect x="0" y="556" width="800" height="44" fill="#0c0806" opacity=".78"/>
+  <text x="400" y="583" text-anchor="middle" font-family="Georgia,'Times New Roman',serif"
+        font-size="16" fill="#ffd98a" letter-spacing="0.06em">More Family Memories</text>
+</svg>
