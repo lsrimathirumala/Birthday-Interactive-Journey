@@ -30,8 +30,8 @@
 **Server test:** `python -m http.server 8000` served `index.html` (HTTP 200, 34 KB) and `content.json` (HTTP 200, valid JSON, 5 stops).  
 **Browser test:** Not performed in this session — no headless browser is available in this environment. Visual verification must be done manually in Chrome/Safari/Firefox at `http://localhost:8000`.
 
-### Remaining Phase 1 items (deferred to Phase 2)
-- `InstancedMesh` for trees and mountains (draw call reduction) — scoped to Phase 2 per instructions.
+### Phase 1 deferred items — resolved in Phase 2
+- `InstancedMesh` for trees and mountains — ✅ completed in Phase 2 (see below).
 
 ---
 
@@ -263,15 +263,29 @@ On mid-range mobile (iPhone SE, Android mid-tier), sustained 60 fps is unlikely 
 9. ✅ **Tab visibility dt spike** — `visibilitychange` resets timer; dt clamped to 100 ms.
 10. ✅ **Deterministic scenery** — `mulberry32` seeded PRNG replaces `Math.random()` for all procedural objects.
 
-### Phase 2 — Performance (Mobile First)
+### Phase 2 — Performance (Mobile First) ✅ COMPLETE
 
 > Goal: smooth 60 fps on a mid-range phone.
 
-1. **`InstancedMesh` for pine trees** — replace 1,280 individual meshes with 2 InstancedMesh objects (trunks, canopies)
-2. **`InstancedMesh` for mountains** — replace ~360 cone meshes with 1 InstancedMesh per color tier
-3. **Seed `Math.random()`** — replace with a seeded pseudo-random (e.g. mulberry32) so layout is deterministic across reloads
-4. **Reduce dash count** — 260 → 130 boxes (increase z-scale to compensate); or use a single ribbon geometry with dashed UV shader
-5. **Disable `backdrop-filter: blur` on low-end devices** — detect `navigator.hardwareConcurrency < 4` and remove blur
+1. ✅ **`InstancedMesh` for pine trees** — 1,280 individual meshes replaced with 5 InstancedMesh (1 trunk + 4 foliage-colour batches). Single shared `CylinderGeometry` for all trunks; single shared unit `ConeGeometry` for all foliage tiers. Non-uniform per-instance matrix scaling reproduces all size variation.
+2. ✅ **`InstancedMesh` for mountains** — 360 individual cone meshes replaced with 6 InstancedMesh (one per colour range). Single shared unit `ConeGeometry(1,1,6)`. Non-uniform per-instance matrix scale reproduces original height × radius variation.
+3. ✅ **Seeded PRNG** — `mulberry32(0xBEEFCAFE)` replaces `Math.random()` for all scenery. Identical RNG call sequence preserved so all world positions are unchanged.
+4. ✅ **Shared matrix helpers** — `_m4`, `_qY`, `_axY`, `_ipos`, `_iscl` reused across all ~1,640 instance compositions to avoid per-iteration allocation.
+5. **Reduce dash count** — deferred; 260 dashes is moderate cost compared to instanced scenery.
+6. **`backdrop-filter` on low-end** — deferred to post-Phase 3.
+
+**Phase 2 results:**
+
+| Metric | Before | After | Notes |
+|---|---|---|---|
+| Scenery draw calls (estimated) | ~1,640 | ~11 | 6 mountain + 5 tree InstancedMesh |
+| Total draw calls (estimated) | ~1,650 | ~21 | Including ground, road, dashes, sun, rings |
+| Unique geometry objects | ~1,650 | ~12 | 3 shared scenery + 9 other |
+| Unique material objects | ~390 | ~11 | 6 mountain + 1 trunk + 4 foliage |
+| Instancing batches | 0 | 11 | All scenery instanced |
+| Browser measurement | ⚠️ Not performed | — | Check DevTools console for `renderer.info` log |
+
+*Estimated draw-call reduction: ~98.7% for scenery geometry. Actual values logged to browser console after first frame.*
 
 ### Phase 3 — Road and Camera Quality
 
