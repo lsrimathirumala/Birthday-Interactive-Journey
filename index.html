@@ -1,68 +1,773 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#172033">
+<meta charset="utf-8">
+<!-- viewport-fit=cover enables env(safe-area-inset-*) on iOS notch / home-bar devices -->
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#172033">
 <title>The Best Is Yet to Come · For Nannagaru</title>
 <style>
-:root{--gold:#ffd58a;--cream:#fff3df;--ink:#172033;--glass:rgba(15,22,36,.82);--muted:#e2d5c0}*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#111b2a;color:var(--cream);font-family:Georgia,'Times New Roman',serif}#scene{position:fixed;inset:0;display:block;width:100%;height:100%;outline:none}#vignette{position:fixed;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(5,10,20,.14),transparent 30%,transparent 65%,rgba(5,9,17,.52)),radial-gradient(ellipse at center,transparent 42%,rgba(3,7,15,.45) 100%)}.hud{position:fixed;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(16px,3vw,36px)}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.brand{letter-spacing:.18em;text-transform:uppercase;font:600 10px/1.5 system-ui,sans-serif;color:#ffe1a5}.chapterCount{font:12px system-ui,sans-serif;color:#fff2d8;background:#0d1729a8;border:1px solid #fff4d033;border-radius:30px;padding:9px 13px;backdrop-filter:blur(12px)}.hero{max-width:660px;margin:auto auto 5vh 0;text-shadow:0 2px 24px #0008;transition:opacity .35s,transform .35s}.eyebrow{font:600 11px system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}.hero h1{font-weight:400;font-size:clamp(38px,7vw,82px);line-height:.98;letter-spacing:-.04em;margin:0 0 16px}.hero p{font-size:clamp(15px,2vw,20px);line-height:1.55;color:#fff1d7;max-width:520px;margin:0}.bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;pointer-events:auto}.hint{font:12px/1.5 system-ui,sans-serif;color:#fff0d0b8;max-width:230px}.controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap;justify-content:flex-end}button{font:600 12px system-ui,sans-serif;letter-spacing:.02em;border:1px solid #fff3d74a;color:#fff3df;background:#111a2abf;padding:12px 16px;border-radius:30px;backdrop-filter:blur(14px);cursor:pointer;transition:transform .2s,background .2s}button:hover{transform:translateY(-2px);background:#29344bcc}button.primary{background:var(--gold);color:#282014;border-color:var(--gold)}button:disabled{opacity:.45;cursor:default;transform:none}.modalWrap{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:#07101bb3;backdrop-filter:blur(9px);z-index:5}.modalWrap.show{display:flex}.modal{width:min(640px,100%);max-height:88vh;overflow:auto;background:linear-gradient(145deg,#25364a,#121d2e 75%);border:1px solid #ffe2a344;border-radius:24px;padding:clamp(22px,5vw,42px);box-shadow:0 24px 100px #0008}.modal .eyebrow{margin-bottom:10px}.modal h2{font-size:clamp(30px,5vw,48px);line-height:1.05;font-weight:400;margin:0 0 18px}.modal p{font-size:17px;line-height:1.7;color:#f5e8d4;white-space:pre-line}.photo{display:none;width:100%;max-height:300px;object-fit:cover;border-radius:14px;margin:12px 0 18px;border:1px solid #fff3d733}.modalActions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap}.upload{display:inline-flex;align-items:center;gap:8px;font:12px system-ui,sans-serif;color:#f5dfb8;margin-top:12px}.upload input{max-width:180px}.progress{position:fixed;left:50%;bottom:95px;transform:translateX(-50%);display:flex;gap:6px;z-index:2;pointer-events:auto}.dot{width:8px;height:8px;padding:0;border-radius:50%;min-width:8px;background:#fff7d655;border:1px solid #fff8d988}.dot.active{background:var(--gold);box-shadow:0 0 15px #ffce70}.loading{position:fixed;inset:0;display:grid;place-items:center;background:#111b2a;z-index:10;font:13px system-ui,sans-serif;color:#ffe0a0;letter-spacing:.08em;transition:opacity .6s}.loading.hide{opacity:0;pointer-events:none}.smallNote{font:10px/1.5 system-ui,sans-serif;color:#fff3d58c;margin-top:10px}@media(max-width:600px){.hud{padding:17px}.hero{margin-bottom:6vh}.hero h1{font-size:clamp(38px,12vw,64px)}.bottom{align-items:flex-end}.hint{max-width:115px;font-size:10px}.controls{max-width:230px}.controls button{padding:11px 13px;font-size:11px}.progress{bottom:100px}.brand{font-size:9px}}
- .photoGallery{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:12px 0}.photoGallery figure{margin:0;min-width:min(250px,85%);max-width:350px;scroll-snap-align:start}.photoGallery img{width:100%;height:180px;object-fit:contain;background:#0a1423;border-radius:12px}.photoGallery figcaption{font:12px/1.4 system-ui,sans-serif;color:#e9d6b3;margin:5px}.photoGallery:empty{display:none}#mTelugu{color:#ffdc9d}.modalWrap{background:#07101b77;backdrop-filter:blur(3px)}.modal{width:min(570px,92%);max-height:75dvh;background:linear-gradient(145deg,#25364adf,#121d2ee8 75%)}.hud .hero{pointer-events:none}button:focus-visible{outline:3px solid #fff} @media(max-width:600px){.modalWrap{align-items:flex-end;padding:8px}.modal{max-height:67dvh;padding:20px;border-radius:18px}.hint{display:none}.controls{max-width:100%}.progress{bottom:94px}} </style>
+/* ── Base ── */
+:root{--gold:#ffd58a;--cream:#fff3df;--ink:#172033;--glass:rgba(15,22,36,.82);--muted:#e2d5c0}
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#111b2a;color:var(--cream);font-family:Georgia,'Times New Roman',serif}
+/* touch-action:none prevents the browser intercepting canvas drags as scroll gestures */
+#scene{position:fixed;inset:0;display:block;width:100%;height:100%;outline:none;touch-action:none}
+#vignette{position:fixed;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(5,10,20,.14),transparent 30%,transparent 65%,rgba(5,9,17,.52)),radial-gradient(ellipse at center,transparent 42%,rgba(3,7,15,.45) 100%)}
+
+/* ── HUD ── */
+.hud{position:fixed;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(16px,3vw,36px);/* safe-area bottom handled below */}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.brand{letter-spacing:.18em;text-transform:uppercase;font:600 10px/1.5 system-ui,sans-serif;color:#ffe1a5}
+.chapterCount{font:12px system-ui,sans-serif;color:#fff2d8;background:#0d1729a8;border:1px solid #fff4d033;border-radius:30px;padding:9px 13px;backdrop-filter:blur(12px)}
+.hero{max-width:660px;margin:auto auto 5vh 0;text-shadow:0 2px 24px #0008;transition:opacity .35s,transform .35s}
+.eyebrow{font:600 11px system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.hero h1{font-weight:400;font-size:clamp(38px,7vw,82px);line-height:.98;letter-spacing:-.04em;margin:0 0 16px}
+.hero p{font-size:clamp(15px,2vw,20px);line-height:1.55;color:#fff1d7;max-width:520px;margin:0}
+.bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;pointer-events:auto}
+.hint{font:12px/1.5 system-ui,sans-serif;color:#fff0d0b8;max-width:230px}
+.controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+
+/* ── Buttons ── */
+button{font:600 12px system-ui,sans-serif;letter-spacing:.02em;border:1px solid #fff3d74a;color:#fff3df;background:#111a2abf;padding:12px 16px;border-radius:30px;backdrop-filter:blur(14px);cursor:pointer;transition:transform .2s,background .2s}
+button:hover{transform:translateY(-2px);background:#29344bcc}
+button.primary{background:var(--gold);color:#282014;border-color:var(--gold)}
+button:disabled{opacity:.45;cursor:default;transform:none}
+button:focus-visible{outline:3px solid #fff}
+
+/* ── Memory modal ── */
+.modalWrap{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:#07101bb3;backdrop-filter:blur(9px);z-index:5}
+.modalWrap.show{display:flex}
+.modal{width:min(640px,100%);max-height:88vh;overflow:auto;background:linear-gradient(145deg,#25364a,#121d2e 75%);border:1px solid #ffe2a344;border-radius:24px;padding:clamp(22px,5vw,42px);box-shadow:0 24px 100px #0008}
+.modal .eyebrow{margin-bottom:10px}
+.modal h2{font-size:clamp(30px,5vw,48px);line-height:1.05;font-weight:400;margin:0 0 18px}
+.modal p{font-size:17px;line-height:1.7;color:#f5e8d4;white-space:pre-line}
+.photo{display:none;width:100%;max-height:300px;object-fit:cover;border-radius:14px;margin:12px 0 18px;border:1px solid #fff3d733}
+.modalActions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap}
+.upload{display:inline-flex;align-items:center;gap:8px;font:12px system-ui,sans-serif;color:#f5dfb8;margin-top:12px}
+.upload input{max-width:180px}
+
+/* ── Progress dots ── */
+.progress{position:fixed;left:50%;bottom:95px;transform:translateX(-50%);display:flex;gap:6px;z-index:2;pointer-events:auto}
+.dot{width:8px;height:8px;padding:0;border-radius:50%;min-width:8px;background:#fff7d655;border:1px solid #fff8d988}
+.dot.active{background:var(--gold);box-shadow:0 0 15px #ffce70}
+
+/* ── Loading overlay ── */
+.loading{position:fixed;inset:0;display:grid;place-items:center;background:#111b2a;z-index:10;font:13px system-ui,sans-serif;color:#ffe0a0;letter-spacing:.08em;transition:opacity .6s}
+.loading.hide{opacity:0;pointer-events:none}
+
+/* ── Photo galleries ── */
+.photoGallery{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:12px 0}
+.photoGallery figure{margin:0;min-width:min(250px,85%);max-width:350px;scroll-snap-align:start}
+.photoGallery img{width:100%;height:180px;object-fit:contain;background:#0a1423;border-radius:12px}
+.photoGallery figcaption{font:12px/1.4 system-ui,sans-serif;color:#e9d6b3;margin:5px}
+.photoGallery:empty{display:none}
+
+/* ── Misc ── */
+.smallNote{font:10px/1.5 system-ui,sans-serif;color:#fff3d58c;margin-top:10px}
+#mTelugu{color:#ffdc9d}
+.hud .hero{pointer-events:none}
+
+/* ── iOS safe-area insets ──────────────────────────────────────────────────
+   env(safe-area-inset-bottom) is non-zero only on iPhones with home indicator.
+   The fallback value 0px keeps behaviour identical on all other devices.      */
+.progress{bottom:calc(95px + env(safe-area-inset-bottom, 0px))}
+.hud{padding-bottom:max(clamp(16px,3vw,36px), calc(12px + env(safe-area-inset-bottom, 0px)))}
+
+/* ── Small screens ── */
+@media(max-width:600px){
+  .hud{padding:17px;padding-bottom:max(17px, calc(10px + env(safe-area-inset-bottom, 0px)))}
+  .hero{margin-bottom:6vh}
+  .hero h1{font-size:clamp(38px,12vw,64px)}
+  .bottom{align-items:flex-end}
+  .hint{display:none}
+  .controls{max-width:100%}
+  .controls button{padding:11px 13px;font-size:11px}
+  .progress{bottom:calc(94px + env(safe-area-inset-bottom, 0px))}
+  .brand{font-size:9px}
+  .modalWrap{align-items:flex-end;padding:8px}
+  .modal{max-height:67dvh;padding:20px;padding-bottom:max(20px, calc(12px + env(safe-area-inset-bottom, 0px)));border-radius:18px}
+}
+</style>
 </head>
 <body>
-<canvas id="scene" aria-label="A 3D mountain road birthday journey"></canvas><div id="vignette"></div>
+
+<canvas id="scene" aria-label="A 3D mountain road birthday journey"></canvas>
+<div id="vignette"></div>
 <div class="loading" id="loading">PREPARING THE ROAD AHEAD…</div>
+
 <div class="hud">
- <div class="top"><div class="brand">A birthday journey · made with love</div><div class="chapterCount" id="count">THE BEGINNING · 1 OF 5</div></div>
- <section class="hero" id="hero"><div class="eyebrow" id="eyebrow">For Nannagaru</div><h1 id="title">The best<br>is yet to come.</h1><p id="subtitle">57 years behind you. So many beautiful miles still ahead.</p></section>
- <div class="bottom"><div class="hint" id="hint">A little journey through your life—and the wonderful road still ahead.</div><div class="controls"><button id="prevBtn">← Previous</button><button id="memoryBtn">Open this stop ↗</button><button class="primary" id="nextBtn">Begin the journey →</button></div></div>
+  <div class="top">
+    <div class="brand">A birthday journey · made with love</div>
+    <div class="chapterCount" id="count">THE BEGINNING · 1 OF 5</div>
+  </div>
+  <section class="hero" id="hero">
+    <div class="eyebrow" id="eyebrow">For Nannagaru</div>
+    <h1 id="title">The best<br>is yet to come.</h1>
+    <p id="subtitle">57 years behind you. So many beautiful miles still ahead.</p>
+  </section>
+  <div class="bottom">
+    <div class="hint" id="hint">A little journey through your life—and the wonderful road still ahead.</div>
+    <div class="controls">
+      <button id="prevBtn">← Previous</button>
+      <button id="memoryBtn">Open this stop ↗</button>
+      <button class="primary" id="nextBtn">Begin the journey →</button>
+    </div>
+  </div>
 </div>
-<div id="errorMessage" role="status" style="display:none;position:fixed;top:55px;left:16px;right:16px;background:#1a2435;padding:16px;z-index:12;border-radius:12px"></div><div class="progress" id="progress" aria-label="Journey stops"></div>
-<div class="modalWrap" id="modalWrap"><article class="modal"><div class="eyebrow" id="mEyebrow">A moment along the way</div><h2 id="mTitle">A life well travelled</h2><div id="photoGallery" class="photoGallery"></div><p id="mBody"></p><p id="mTelugu"></p><div id="futureGallery" class="photoGallery"></div><label class="upload">Preview a photo locally <input id="photoInput" type="file" accept="image/*"></label><div id="previewGallery" class="photoGallery"></div><div class="smallNote">Photo preview is local to this browser. Add your final photos to the website before sharing it.</div><div class="modalActions"><button id="closeBtn">Return to Road</button><button class="primary" id="continueBtn">Continue the journey →</button></div></article></div>
+
+<!-- B6: error display — shown on fetch / WebGL / config failure -->
+<div id="errorMessage" role="alert" aria-live="assertive"
+     style="display:none;position:fixed;top:55px;left:16px;right:16px;background:#2a1010;color:#ffd0c0;padding:18px 20px;z-index:20;border-radius:14px;border:1px solid #ff6b4a55;font:14px/1.6 system-ui,sans-serif;max-width:600px"></div>
+
+<div class="progress" id="progress" aria-label="Journey stops"></div>
+
+<div class="modalWrap" id="modalWrap">
+  <article class="modal">
+    <div class="eyebrow" id="mEyebrow">A moment along the way</div>
+    <h2 id="mTitle">A life well travelled</h2>
+    <div id="photoGallery" class="photoGallery"></div>
+    <p id="mBody"></p>
+    <p id="mTelugu"></p>
+    <div id="futureGallery" class="photoGallery"></div>
+    <label class="upload">Preview a photo locally
+      <input id="photoInput" type="file" accept="image/*">
+    </label>
+    <div id="previewGallery" class="photoGallery"></div>
+    <div class="smallNote">Photo preview is local to this browser. Add your final photos to the website before sharing it.</div>
+    <div class="modalActions">
+      <button id="closeBtn">Return to Road</button>
+      <button class="primary" id="continueBtn">Continue the journey →</button>
+    </div>
+  </article>
+</div>
+
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js';
-const content = await fetch('./content.json').then(r => { if(!r.ok) throw Error('Cannot load content.json'); return r.json(); });
-const stops = content.stops.filter(s=>s.enabled).sort((a,b)=>a.roadPosition-b.roadPosition);
-if (!stops.length) throw Error('Enable at least one stop in content.json');
-const chapters=stops.map(s=>({tag:s.title,title:s.headline,subtitle:s.subtitle,stop:s.markerLabel,body:s.story,season:['beginning','building','family','renewal','future'].indexOf(s.sceneType) >= 0 ? ['beginning','building','family','renewal','future'].indexOf(s.sceneType) : 0}));
-const markerTs=stops.map(s=>THREE.MathUtils.clamp(Number(s.roadPosition),.04,.94));
-const $=id=>document.getElementById(id);let current=0,travelling=false,stopped=true;const canvas=$('scene');const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (!document.createElement('canvas').getContext('webgl2') && !document.createElement('canvas').getContext('webgl')) {document.getElementById('loading').textContent='3D graphics are unavailable in this browser. Please try a current Chrome, Safari, or Firefox browser.';throw Error('WebGL unavailable');}
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
-const scene=new THREE.Scene();scene.background=new THREE.Color('#e7a66f');scene.fog=new THREE.FogExp2('#d99b6a',.0095);
-const camera=new THREE.PerspectiveCamera(66,innerWidth/innerHeight,.1,900);camera.position.set(0,2.6,0);
-scene.add(new THREE.HemisphereLight(0xc9dcff,0x64513b,2.0));const sun=new THREE.DirectionalLight(0xffd19a,3.2);sun.position.set(-70,100,-130);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);
-const mat=(color,roughness=1)=>new THREE.MeshStandardMaterial({color,roughness});const groundMat=mat('#52694d'),roadMat=mat('#343b43'),lineMat=mat('#f6dca2'),rockMat=mat('#6d6869'),treeMats=['#315b49','#47684a','#6f7650','#8b654c'].map(c=>mat(c));
-const ground=new THREE.Mesh(new THREE.PlaneGeometry(1000,1000),groundMat);ground.rotation.x=-Math.PI/2;ground.position.y=-.08;ground.receiveShadow=true;scene.add(ground);
-// Continuous 3D road centerline. The camera actually advances along this spline.
-const points=[];for(let i=0;i<=240;i++){const z=-i*2.8;const x=Math.sin(i*.035)*23+Math.sin(i*.012)*19;const y=0;points.push(new THREE.Vector3(x,y,z));}const path=new THREE.CatmullRomCurve3(points,false,'catmullrom',.35);const pathLength=path.getLength();
-function ribbon(curve,width,segments,material,yOffset=0){const verts=[],uv=[],idx=[];for(let i=0;i<=segments;i++){const t=i/segments,p=curve.getPointAt(t),tan=curve.getTangentAt(t);const side=new THREE.Vector3(-tan.z,0,tan.x).normalize();verts.push(p.x+side.x*width/2,p.y+yOffset,p.z+side.z*width/2,p.x-side.x*width/2,p.y+yOffset,p.z-side.z*width/2);uv.push(0,t*30,1,t*30);if(i<segments){const a=i*2;idx.push(a,a+1,a+2,a+1,a+3,a+2);}}const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);g.computeVertexNormals();return new THREE.Mesh(g,material)}
-const road=ribbon(path,9,1200,roadMat,.015);road.receiveShadow=true;scene.add(road);
-// Dashed center line pieces follow the same curve.
-const dashGroup=new THREE.Group();for(let i=0;i<260;i++){const t=i/260;const a=path.getPointAt(t),b=path.getPointAt(Math.min(1,t+.003));const d=new THREE.Vector3().subVectors(b,a).normalize();const mesh=new THREE.Mesh(new THREE.BoxGeometry(.16,.035,Math.max(.5,d.length()*2.4)),lineMat);mesh.position.copy(a);mesh.position.y=.055;mesh.rotation.y=Math.atan2(d.x,d.z);dashGroup.add(mesh)}scene.add(dashGroup);
-// Hills/mountains form layered ranges on either side of the route.
-function makeMountains(side,layer,count,color,scale){const group=new THREE.Group();for(let i=0;i<count;i++){const z=-30-i*16-Math.random()*8;const center=path.getPointAt(Math.min(.99,Math.max(0,(-z)/pathLength))).x;const h=(18+Math.random()*32)*scale;const geo=new THREE.ConeGeometry((12+Math.random()*18)*scale,h,5+Math.floor(Math.random()*3));const mesh=new THREE.Mesh(geo,mat(color));mesh.position.set(center+side*(24+layer*19+Math.random()*12),h/2-1,z);mesh.rotation.y=Math.random()*Math.PI;mesh.scale.y=1.1;group.add(mesh)}scene.add(group);return group}makeMountains(-1,0,65,'#6b7180',.8);makeMountains(1,0,65,'#7b7781',.8);makeMountains(-1,1,60,'#555d70',1.25);makeMountains(1,1,60,'#626477',1.25);makeMountains(-1,2,55,'#3d4b60',1.7);makeMountains(1,2,55,'#455168',1.7);
-// Pine trees and rocks beside the road give strong foreground parallax.
-const scenery=new THREE.Group();function tree(x,y,z,s,idx){const g=new THREE.Group();const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.12*s,.2*s,1.4*s,5),mat('#5c4538'));trunk.position.y=.7*s;g.add(trunk);for(let j=0;j<3;j++){const c=new THREE.Mesh(new THREE.ConeGeometry((1.0-j*.19)*s,1.8*s,6),treeMats[idx%treeMats.length]);c.position.y=(1.2+j*.62)*s;g.add(c)}g.position.set(x,y,z);g.rotation.y=Math.random()*Math.PI;scenery.add(g)}for(let i=0;i<320;i++){const z=-8-Math.random()*640;const p=path.getPointAt(Math.min(.999,Math.abs(z)/pathLength));const side=Math.random()<.5?-1:1;tree(p.x+side*(7+Math.random()*35),0,z,.55+Math.random()*1.9,Math.floor(Math.random()*4));}scene.add(scenery);
-// A warm sun sits low near the vanishing point.
-const sunDisc=new THREE.Mesh(new THREE.SphereGeometry(7,24,16),new THREE.MeshBasicMaterial({color:'#ffd79a'}));sunDisc.position.set(-22,27,-300);scene.add(sunDisc);
-// Milestone markers are floating luminous rings beside the road at distinct curve positions.
-const markerGroup=new THREE.Group(),markers=[];chapters.forEach((ch,i)=>{const t=markerTs[i],p=path.getPointAt(t),tan=path.getTangentAt(t),side=new THREE.Vector3(-tan.z,0,tan.x).normalize();const pos=p.clone().addScaledVector(side,i%2?7:-7);pos.y=1.7;const ring=new THREE.Mesh(new THREE.TorusGeometry(1.05,.09,10,32),new THREE.MeshStandardMaterial({color:'#ffdc91',emissive:'#ffb94f',emissiveIntensity:2.5,metalness:.2,roughness:.3}));ring.position.copy(pos);ring.userData={index:i};markerGroup.add(ring);const orb=new THREE.Mesh(new THREE.SphereGeometry(.28,16,12),new THREE.MeshBasicMaterial({color:'#fff0c4'}));orb.position.copy(pos);orb.position.y+=1.2;markerGroup.add(orb);markers.push({ring,orb,t,pos,index:i})});scene.add(markerGroup);
-// seasonal ambience is carried by sky, fog, ground, and light.
-const seasonLooks=[{sky:'#e6ad7c',fog:'#dba77c',ground:'#62704e',sun:'#ffd49a'},{sky:'#94c6dc',fog:'#9dbdca',ground:'#527a4f',sun:'#fff0b0'},{sky:'#e8a06b',fog:'#ce8b67',ground:'#886847',sun:'#ffd08a'},{sky:'#b3c6dc',fog:'#9eabbc',ground:'#65766e',sun:'#fff1d0'},{sky:'#f5c27f',fog:'#e6ad79',ground:'#6f7952',sun:'#fff0b5'}];
-let seasonTarget=0;function setSeason(i){seasonTarget=Math.max(0,Math.min(4,i));}function blendSeason(dt){const s=seasonLooks[seasonTarget],alpha=1-Math.exp(-dt*1.2);scene.background.lerp(new THREE.Color(s.sky),alpha);scene.fog.color.lerp(new THREE.Color(s.fog),alpha);ground.material.color.lerp(new THREE.Color(s.ground),alpha);sunDisc.material.color.lerp(new THREE.Color(s.sun),alpha);sun.color.lerp(new THREE.Color(s.sun),alpha);}
-function atT(t){return path.getPointAt(THREE.MathUtils.clamp(t,0,.9999))}function cameraPose(t,lookAhead=.035){const p=atT(t),look=atT(Math.min(.999,t+lookAhead));camera.position.set(p.x,p.y+2.15,p.z);camera.lookAt(look.x,look.y+1.5,look.z)}
-let targetT=0,camT=0,travelStart=0,travelFrom=0,travelTo=0,travelDuration=3600;const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-function goTo(index){if(travelling || index<0 || index>=chapters.length)return;closeModal();current=index;const dest=markerTs[index];travelFrom=camT;travelTo=Math.max(.015,dest-.025);travelStart=performance.now();travelDuration=(reducedMotion?600:3000+Math.abs(travelTo-travelFrom)*2400);travelling=true;stopped=false;$('nextBtn').disabled=true;$('memoryBtn').disabled=true;$('hero').style.opacity='.1';$('hero').style.transform='translateY(12px)';setSeason(chapters[index].season);}
-let lastFrame=0;function render(now){requestAnimationFrame(render);const dt=Math.min(.1,(now-lastFrame)/1000||.016);lastFrame=now;blendSeason(dt);if(travelling){const q=Math.min(1,(now-travelStart)/travelDuration);camT=THREE.MathUtils.lerp(travelFrom,travelTo,ease(q));if(q>=1){travelling=false;stopped=true;$('nextBtn').disabled=false;$('memoryBtn').disabled=false;$('hero').style.opacity='1';$('hero').style.transform='translateY(0)';updateCopy();}}else if(stopped){camT+=Math.sin(now*.00035)*.000001;}cameraPose(camT);dashGroup.children.forEach((d,i)=>{d.visible=true});markers.forEach((m,i)=>{m.ring.rotation.z=Math.sin(now*.0015+i)*.08;m.orb.position.y=m.pos.y+1.2+Math.sin(now*.002+i)*.18;m.ring.material.emissiveIntensity=(i===current?3.4:1.5);});renderer.render(scene,camera)}
-function updateCopy(){const c=chapters[current];$('eyebrow').textContent=c.tag;$('title').innerHTML=c.title.replace('\n','<br>');$('subtitle').textContent=c.subtitle;$('count').textContent=`${c.stop.toUpperCase()} · ${current+1} OF ${chapters.length}`;$('hint').textContent=current===4?'You’ve reached the horizon. There is still so much beautiful road ahead.':'Tap “Open this stop” for the memory, then continue down the road.';$('nextBtn').textContent=current===0?'Start Journey →':current===chapters.length-1?'Restart Journey ↺':'Continue Journey →';$('prevBtn').disabled=travelling || current===0;document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));}
-function fillGallery(id,photos){const host=$(id);host.replaceChildren();for(const photo of photos){if(!photo.src)continue;const fig=document.createElement('figure'),img=document.createElement('img'),cap=document.createElement('figcaption');img.src=photo.src;img.alt=photo.caption||'Memory photograph';img.loading='lazy';img.onerror=()=>{img.style.display='none';cap.textContent='Photo not added yet: '+photo.src;};cap.textContent=photo.caption||'';fig.append(img,cap);host.append(fig);}}
-function openModal(){const c=chapters[current],s=stops[current];$('mEyebrow').textContent=s.year ? s.year+' · '+c.tag:c.tag;$('mTitle').textContent=s.title;$('mBody').textContent=s.story;$('mTelugu').textContent=s.teluguMessage||'';fillGallery('photoGallery',s.photos||[]);$('previewGallery').replaceChildren();const future=(content.site.futureScenes||[]).filter(f=>s.futureScene && (f.id===s.futureScene || s.futureScene==='all'));fillGallery('futureGallery',future.map(f=>({src:f.src,caption:f.title+' · An imagined possibility'})));if(current===stops.length-1){$('mBody').textContent=s.story+'\n\n'+content.site.finalLetter;$('mTelugu').textContent=content.site.finalTelugu||s.teluguMessage||'';}$('modalWrap').classList.add('show');$('closeBtn').focus();}
-function closeModal(){$('modalWrap').classList.remove('show');}
-$('nextBtn').addEventListener('click',()=>goTo(current===chapters.length-1?0:current+1));$('prevBtn').addEventListener('click',()=>goTo(current-1));$('memoryBtn').addEventListener('click',openModal);$('closeBtn').addEventListener('click',closeModal);$('continueBtn').addEventListener('click',()=>{closeModal();goTo(current===chapters.length-1?0:current+1)});$('photoInput').addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;const url=URL.createObjectURL(file);fillGallery('previewGallery',[{src:url,caption:'Local preview only — add this file to assets/photos and update content.json to publish.'}]);});$('modalWrap').addEventListener('click',e=>{if(e.target===$('modalWrap'))closeModal()});addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
-const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();canvas.addEventListener('pointerup',e=>{if(travelling || $('modalWrap').classList.contains('show'))return;pointer.set(e.clientX/innerWidth*2-1,-e.clientY/innerHeight*2+1);raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(markers.map(m=>m.ring));if(hits.length){const i=hits[0].object.userData.index;if(i===current)openModal();else goTo(i);}});
-chapters.forEach((c,i)=>{const b=document.createElement('button');b.className='dot'+(i===0?' active':'');b.title=c.stop;b.setAttribute('aria-label','Go to '+c.stop);b.addEventListener('click',()=>goTo(i));$('progress').appendChild(b)});
-// Begin at the mouth of the road; each chapter moves the camera down the actual 3D spline.
-camT=.012;cameraPose(camT);updateCopy();$('count').textContent='READY TO BEGIN · 1 OF '+chapters.length;$('loading').classList.add('hide');setTimeout(()=>$('loading').remove(),800);requestAnimationFrame(render);
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));});
+
+// ── Helper: show a readable error to the user ─────────────────────────────
+// Called before the loading screen is dismissed so we can update its text.
+function showError(msg) {
+  const el = document.getElementById('errorMessage');
+  if (el) { el.textContent = msg; el.style.display = 'block'; }
+  const loading = document.getElementById('loading');
+  if (loading) {
+    loading.textContent = '⚠ Could not start the journey.';
+    // Leave the overlay visible — the scene beneath would be empty without content.
+  }
+}
+
+// ── WebGL availability check ──────────────────────────────────────────────
+// Checked first so a clear message appears before any asset fetching starts.
+{
+  const probe = document.createElement('canvas');
+  if (!probe.getContext('webgl2') && !probe.getContext('webgl')) {
+    showError(
+      '3D graphics (WebGL) are not available in this browser. ' +
+      'Please try a current version of Chrome, Safari, or Firefox.'
+    );
+    throw new Error('WebGL unavailable');
+  }
+}
+
+// ── Load content configuration ────────────────────────────────────────────
+let content;
+try {
+  const resp = await fetch('./content.json');
+  if (!resp.ok) throw new Error('HTTP ' + resp.status + ' ' + resp.statusText);
+  content = await resp.json();
+} catch (err) {
+  showError(
+    'Could not load content.json — ' + err.message + '. ' +
+    'Open the project via a local server (python -m http.server 8000) rather than the file:// protocol.'
+  );
+  throw err;
+}
+
+// Validate: at least one enabled stop must exist.
+const stops = content.stops.filter(s => s.enabled).sort((a, b) => a.roadPosition - b.roadPosition);
+if (!stops.length) {
+  showError(
+    'No enabled stops found in content.json. ' +
+    'Set "enabled": true on at least one stop in the "stops" array.'
+  );
+  throw new Error('No enabled stops');
+}
+
+// Map stops → flat chapter objects used throughout the UI.
+const SCENE_TYPES = ['beginning', 'building', 'family', 'renewal', 'future'];
+const chapters = stops.map(s => ({
+  tag:     s.title,
+  title:   s.headline,
+  subtitle: s.subtitle,
+  stop:    s.markerLabel,
+  body:    s.story,
+  season:  Math.max(0, SCENE_TYPES.indexOf(s.sceneType)),
+}));
+const markerTs = stops.map(s => THREE.MathUtils.clamp(Number(s.roadPosition), 0.04, 0.94));
+
+// ── Shorthand & shared state ──────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+let current = 0, travelling = false, stopped = true;
+const canvas = $('scene');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ── Renderer ──────────────────────────────────────────────────────────────
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type    = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace  = THREE.SRGBColorSpace;
+renderer.toneMapping       = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+
+// ── Scene ─────────────────────────────────────────────────────────────────
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#e7a66f');
+scene.fog        = new THREE.FogExp2('#d99b6a', 0.0095);
+
+const camera = new THREE.PerspectiveCamera(66, innerWidth / innerHeight, 0.1, 900);
+camera.position.set(0, 2.6, 0);
+
+// Lights
+scene.add(new THREE.HemisphereLight(0xc9dcff, 0x64513b, 2.0));
+const sun = new THREE.DirectionalLight(0xffd19a, 3.2);
+sun.position.set(-70, 100, -130);
+sun.castShadow = true;
+sun.shadow.mapSize.set(1024, 1024);
+scene.add(sun);
+
+// ── Materials ─────────────────────────────────────────────────────────────
+const mat      = (color, roughness = 1) => new THREE.MeshStandardMaterial({ color, roughness });
+const groundMat = mat('#52694d');
+const roadMat   = mat('#343b43');
+const lineMat   = mat('#f6dca2');
+// B4 FIX: rockMat removed — was declared in the original but no rock geometry
+// was ever created, making it pure dead weight in the material pool.
+const treeMats  = ['#315b49', '#47684a', '#6f7650', '#8b654c'].map(c => mat(c));
+
+// ── Ground ────────────────────────────────────────────────────────────────
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), groundMat);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -0.08;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// ── Road spline ───────────────────────────────────────────────────────────
+// 241 control points. X winds sinusoidally; Z grows linearly; Y stays at 0.
+// (Elevation is a Phase 3 enhancement — not changed here.)
+const splinePoints = [];
+for (let i = 0; i <= 240; i++) {
+  const z = -i * 2.8;
+  const x = Math.sin(i * 0.035) * 23 + Math.sin(i * 0.012) * 19;
+  splinePoints.push(new THREE.Vector3(x, 0, z));
+}
+const path = new THREE.CatmullRomCurve3(splinePoints, false, 'catmullrom', 0.35);
+const pathLength = path.getLength();
+
+// ── Road surface ──────────────────────────────────────────────────────────
+// Custom quad-strip ribbon following the spline's tangent, keeping road width exact.
+function ribbon(curve, width, segments, material, yOffset = 0) {
+  const verts = [], uv = [], idx = [];
+  for (let i = 0; i <= segments; i++) {
+    const t    = i / segments;
+    const p    = curve.getPointAt(t);
+    const tan  = curve.getTangentAt(t);
+    const side = new THREE.Vector3(-tan.z, 0, tan.x).normalize();
+    verts.push(
+      p.x + side.x * width / 2, p.y + yOffset, p.z + side.z * width / 2,
+      p.x - side.x * width / 2, p.y + yOffset, p.z - side.z * width / 2
+    );
+    uv.push(0, t * 30, 1, t * 30);
+    if (i < segments) {
+      const a = i * 2;
+      idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2);
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
+  g.setAttribute('uv',       new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx);
+  g.computeVertexNormals();
+  return new THREE.Mesh(g, material);
+}
+const road = ribbon(path, 9, 1200, roadMat, 0.015);
+road.receiveShadow = true;
+scene.add(road);
+
+// ── Road dashes ───────────────────────────────────────────────────────────
+const dashGroup = new THREE.Group();
+for (let i = 0; i < 260; i++) {
+  const t = i / 260;
+  const a = path.getPointAt(t);
+  const b = path.getPointAt(Math.min(1, t + 0.003));
+  const d = new THREE.Vector3().subVectors(b, a).normalize();
+  const mesh = new THREE.Mesh(
+    new THREE.BoxGeometry(0.16, 0.035, Math.max(0.5, d.length() * 2.4)),
+    lineMat
+  );
+  mesh.position.copy(a);
+  mesh.position.y = 0.055;
+  mesh.rotation.y = Math.atan2(d.x, d.z);
+  dashGroup.add(mesh);
+}
+scene.add(dashGroup);
+
+// ── Seeded pseudo-random number generator ─────────────────────────────────
+// B1-adjacent: both mountains and trees used Math.random(), making the scenery
+// layout change on every reload.  Replacing with a seeded PRNG (mulberry32)
+// gives a deterministic layout that is identical across all page loads.
+function mulberry32(seed) {
+  return function () {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = t + Math.imul(t ^ (t >>> 7), 61 | t) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+// Single RNG instance used for ALL procedural scenery — mountains then trees,
+// in construction order, to keep the sequence stable across future edits.
+const rng = mulberry32(0xBEEFCAFE);
+
+// ── Mountains ─────────────────────────────────────────────────────────────
+// NOTE: mountains still use the z→t approximation for their lateral centering
+// because they sit far from the road and the imprecision is invisible at that
+// distance. Only foreground trees (B1) required an accurate fix.
+function makeMountains(side, layer, count, color, scale) {
+  const group = new THREE.Group();
+  for (let i = 0; i < count; i++) {
+    const z      = -30 - i * 16 - rng() * 8;
+    const tApprox = Math.min(0.99, Math.max(0, -z / pathLength));
+    const center = path.getPointAt(tApprox).x;
+    const h      = (18 + rng() * 32) * scale;
+    const geo    = new THREE.ConeGeometry((12 + rng() * 18) * scale, h, 5 + Math.floor(rng() * 3));
+    const mesh   = new THREE.Mesh(geo, mat(color));
+    mesh.position.set(center + side * (24 + layer * 19 + rng() * 12), h / 2 - 1, z);
+    mesh.rotation.y = rng() * Math.PI;
+    mesh.scale.y = 1.1;
+    group.add(mesh);
+  }
+  scene.add(group);
+  return group;
+}
+makeMountains(-1, 0, 65, '#6b7180', 0.8);
+makeMountains( 1, 0, 65, '#7b7781', 0.8);
+makeMountains(-1, 1, 60, '#555d70', 1.25);
+makeMountains( 1, 1, 60, '#626477', 1.25);
+makeMountains(-1, 2, 55, '#3d4b60', 1.7);
+makeMountains( 1, 2, 55, '#455168', 1.7);
+
+// ── Trees ─────────────────────────────────────────────────────────────────
+// B1 FIX — original code placed trees at:
+//   x = path.getPointAt(|z| / pathLength).x  ±  lateral_offset_in_global_X
+//   z = raw random Z
+//
+// Two compounding problems:
+//   (a) |z|/pathLength ≠ the arc-length parameter for that z-coordinate,
+//       because pathLength includes the sinusoidal X winding.
+//   (b) The lateral offset was applied in global X, not perpendicular to the
+//       road — on bends this can point trees INTO the tarmac.
+//
+// Fix: sample the spline directly at uniformly-distributed t values, read both
+// position and tangent from the curve, compute the true perpendicular, and
+// place each tree at  roadPos + perp * lateralDist.  This guarantees trees are
+// always outside the road regardless of bend sharpness.
+const scenery = new THREE.Group();
+
+function tree(pos, scale, typeIdx) {
+  const g = new THREE.Group();
+  const trunk = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.12 * scale, 0.2 * scale, 1.4 * scale, 5),
+    mat('#5c4538')
+  );
+  trunk.position.y = 0.7 * scale;
+  g.add(trunk);
+  for (let j = 0; j < 3; j++) {
+    const cone = new THREE.Mesh(
+      new THREE.ConeGeometry((1.0 - j * 0.19) * scale, 1.8 * scale, 6),
+      treeMats[typeIdx % treeMats.length]
+    );
+    cone.position.y = (1.2 + j * 0.62) * scale;
+    g.add(cone);
+  }
+  g.position.copy(pos);
+  g.rotation.y = rng() * Math.PI;
+  scenery.add(g);
+}
+
+// Road half-width = 4.5 units. Add a 2.5-unit shoulder clearance → 7 units
+// minimum lateral distance from road centre before any tree may appear.
+const TREE_COUNT = 320;
+for (let i = 0; i < TREE_COUNT; i++) {
+  // Spread uniformly in arc-length parameter + small random jitter per slot.
+  const baseT  = (i + 0.5) / TREE_COUNT;                      // uniform base
+  const jitter = (rng() - 0.5) * (0.85 / TREE_COUNT);         // ±half slot
+  const t      = THREE.MathUtils.clamp(baseT + jitter, 0.005, 0.995);
+
+  const p    = path.getPointAt(t);
+  const tan  = path.getTangentAt(t);
+
+  // True perpendicular in the XZ plane (road is flat, so Y component = 0).
+  const perp = new THREE.Vector3(-tan.z, 0, tan.x).normalize();
+
+  const side  = rng() < 0.5 ? 1 : -1;
+  const dist  = 7 + rng() * 35;   // 7 – 42 units laterally from road centre
+  const scale = 0.55 + rng() * 1.9;
+
+  const pos = new THREE.Vector3(
+    p.x + perp.x * side * dist,
+    0,
+    p.z + perp.z * side * dist
+  );
+  tree(pos, scale, Math.floor(rng() * 4));
+}
+scene.add(scenery);
+
+// ── Sun disc ──────────────────────────────────────────────────────────────
+const sunDisc = new THREE.Mesh(
+  new THREE.SphereGeometry(7, 24, 16),
+  new THREE.MeshBasicMaterial({ color: '#ffd79a' })
+);
+sunDisc.position.set(-22, 27, -300);
+scene.add(sunDisc);
+
+// ── Milestone markers ─────────────────────────────────────────────────────
+// Floating torus rings with bobbing orbs, positioned on alternating sides of
+// the road using the correct tangent perpendicular (same logic as tree fix).
+const markerGroup = new THREE.Group();
+const markers = [];
+chapters.forEach((ch, i) => {
+  const t    = markerTs[i];
+  const p    = path.getPointAt(t);
+  const tan  = path.getTangentAt(t);
+  const side = new THREE.Vector3(-tan.z, 0, tan.x).normalize();
+  const pos  = p.clone().addScaledVector(side, i % 2 ? 7 : -7);
+  pos.y = 1.7;
+
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(1.05, 0.09, 10, 32),
+    new THREE.MeshStandardMaterial({
+      color: '#ffdc91', emissive: '#ffb94f',
+      emissiveIntensity: 2.5, metalness: 0.2, roughness: 0.3,
+    })
+  );
+  ring.position.copy(pos);
+  ring.userData = { index: i };
+  markerGroup.add(ring);
+
+  const orb = new THREE.Mesh(
+    new THREE.SphereGeometry(0.28, 16, 12),
+    new THREE.MeshBasicMaterial({ color: '#fff0c4' })
+  );
+  orb.position.copy(pos);
+  orb.position.y += 1.2;
+  markerGroup.add(orb);
+
+  markers.push({ ring, orb, t, pos, index: i });
+});
+scene.add(markerGroup);
+
+// ── Seasonal colour palettes ──────────────────────────────────────────────
+const seasonLooks = [
+  { sky: '#e6ad7c', fog: '#dba77c', ground: '#62704e', sun: '#ffd49a' }, // 0 beginning
+  { sky: '#94c6dc', fog: '#9dbdca', ground: '#527a4f', sun: '#fff0b0' }, // 1 building
+  { sky: '#e8a06b', fog: '#ce8b67', ground: '#886847', sun: '#ffd08a' }, // 2 family
+  { sky: '#b3c6dc', fog: '#9eabbc', ground: '#65766e', sun: '#fff1d0' }, // 3 renewal
+  { sky: '#f5c27f', fog: '#e6ad79', ground: '#6f7952', sun: '#fff0b5' }, // 4 future
+];
+let seasonTarget = 0;
+function setSeason(i) { seasonTarget = Math.max(0, Math.min(4, i)); }
+
+// B2 ANALYSIS & RESULT: The exponential-smoothing approach is correct and
+// frame-rate independent.  Proof:
+//   alpha = 1 - exp(-k·dt)
+//   After N frames: remaining_error = (1-alpha)^N = exp(-k·dt)^N = exp(-k·T)
+// where T = total elapsed time, independent of N or dt.
+// With k = 1.2, τ = 1/k ≈ 0.83 s.  95% complete in ~2.5 s — appropriate for
+// a scenic seasonal transition.  NO CHANGE REQUIRED to the algorithm.
+//
+// Optimization applied: reuse a single Color object to avoid allocating
+// `new THREE.Color()` on every animation frame (reduces GC pressure).
+const _blendCol = new THREE.Color();
+function blendSeason(dt) {
+  const s     = seasonLooks[seasonTarget];
+  const alpha = 1 - Math.exp(-dt * 1.2);
+  _blendCol.set(s.sky);    scene.background.lerp(_blendCol, alpha);
+  _blendCol.set(s.fog);    scene.fog.color.lerp(_blendCol, alpha);
+  _blendCol.set(s.ground); ground.material.color.lerp(_blendCol, alpha);
+  _blendCol.set(s.sun);    sunDisc.material.color.lerp(_blendCol, alpha);
+                           sun.color.lerp(_blendCol, alpha);
+}
+
+// ── Camera helpers ────────────────────────────────────────────────────────
+function atT(t) { return path.getPointAt(THREE.MathUtils.clamp(t, 0, 0.9999)); }
+function cameraPose(t, lookAhead = 0.035) {
+  const p    = atT(t);
+  const look = atT(Math.min(0.999, t + lookAhead));
+  camera.position.set(p.x, p.y + 2.15, p.z);
+  camera.lookAt(look.x, look.y + 1.5, look.z);
+}
+
+// ── Travel state ──────────────────────────────────────────────────────────
+// B3 FIX: targetT removed — was declared but never read anywhere in the code.
+let camT = 0, travelStart = 0, travelFrom = 0, travelTo = 0, travelDuration = 3600;
+const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+function goTo(index) {
+  if (travelling || index < 0 || index >= chapters.length) return;
+  closeModal();
+  current       = index;
+  const dest    = markerTs[index];
+  travelFrom    = camT;
+  travelTo      = Math.max(0.015, dest - 0.025);
+  travelStart   = performance.now();
+  travelDuration = reducedMotion ? 600 : 3000 + Math.abs(travelTo - travelFrom) * 2400;
+  travelling    = true;
+  stopped       = false;
+  $('nextBtn').disabled   = true;
+  $('memoryBtn').disabled = true;
+  $('hero').style.opacity   = '.1';
+  $('hero').style.transform = 'translateY(12px)';
+  setSeason(chapters[index].season);
+}
+
+// ── Animation loop ────────────────────────────────────────────────────────
+let lastFrame = 0;
+
+function render(now) {
+  requestAnimationFrame(render);
+
+  // Clamp dt to 100 ms maximum.  Without this, returning from a background tab
+  // can produce a huge dt that jerks the camera position forward. (Rendering stability)
+  const dt = Math.min(0.1, (now - lastFrame) / 1000 || 0.016);
+  lastFrame = now;
+
+  blendSeason(dt);
+
+  // displayT is what cameraPose() actually uses.  camT holds the canonical
+  // parked or travel position; displayT may include a transient idle offset.
+  let displayT = camT;
+
+  if (travelling) {
+    const q = Math.min(1, (now - travelStart) / travelDuration);
+    camT     = THREE.MathUtils.lerp(travelFrom, travelTo, ease(q));
+    displayT = camT;
+    if (q >= 1) {
+      travelling = false;
+      stopped    = true;
+      $('nextBtn').disabled   = false;
+      $('memoryBtn').disabled = false;
+      $('hero').style.opacity   = '1';
+      $('hero').style.transform = 'translateY(0)';
+      updateCopy();
+    }
+  } else if (stopped) {
+    // B5 FIX: idle breathing — a sinusoidal offset applied ONLY to the display
+    // position; camT is never mutated, so there is zero cumulative drift.
+    // Amplitude: 0.00012 t ≈ 0.08 world units — sub-perceptible as forward
+    // motion but gives the parked view a faint, living quality.
+    // Period: 2π / 0.0009 ms ≈ 7 s — slow enough to avoid motion sickness.
+    // Silenced when the user has requested reduced motion.
+    if (!reducedMotion) {
+      displayT = camT + Math.sin(now * 0.0009) * 0.00012;
+    }
+  }
+
+  cameraPose(displayT);
+
+  // B8 FIX: removed the previous per-frame loop that set every dash mesh's
+  // .visible to true.  No code ever sets any dash invisible, so the loop was
+  // a no-op executed 60 times per second.
+
+  markers.forEach((m, i) => {
+    m.ring.rotation.z = Math.sin(now * 0.0015 + i) * 0.08;
+    m.orb.position.y  = m.pos.y + 1.2 + Math.sin(now * 0.002 + i) * 0.18;
+    m.ring.material.emissiveIntensity = i === current ? 3.4 : 1.5;
+  });
+
+  renderer.render(scene, camera);
+}
+
+// ── UI: copy updates ──────────────────────────────────────────────────────
+function updateCopy() {
+  const c = chapters[current], s = stops[current];
+  $('eyebrow').textContent  = c.tag;
+  $('title').innerHTML      = c.title.replace('\n', '<br>');
+  $('subtitle').textContent = c.subtitle;
+  $('count').textContent    = `${c.stop.toUpperCase()} · ${current + 1} OF ${chapters.length}`;
+  $('hint').textContent     = current === chapters.length - 1
+    ? 'You\u2019ve reached the horizon. There is still so much beautiful road ahead.'
+    : 'Tap \u201cOpen this stop\u201d for the memory, then continue down the road.';
+  $('nextBtn').textContent  = current === 0
+    ? 'Start Journey \u2192'
+    : current === chapters.length - 1
+      ? 'Restart Journey \u21BA'
+      : 'Continue Journey \u2192';
+  $('prevBtn').disabled = travelling || current === 0;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+}
+
+// ── UI: photo gallery ─────────────────────────────────────────────────────
+function fillGallery(id, photos) {
+  const host = $(id);
+  host.replaceChildren();
+  for (const photo of photos) {
+    if (!photo.src) continue;
+    const fig = document.createElement('figure');
+    const img = document.createElement('img');
+    const cap = document.createElement('figcaption');
+    img.src     = photo.src;
+    img.alt     = photo.caption || 'Memory photograph';
+    img.loading = 'lazy';
+    img.onerror = () => {
+      img.style.display = 'none';
+      cap.textContent   = 'Photo not added yet: ' + photo.src;
+    };
+    cap.textContent = photo.caption || '';
+    fig.append(img, cap);
+    host.append(fig);
+  }
+}
+
+// ── UI: modal open/close ──────────────────────────────────────────────────
+function openModal() {
+  const c = chapters[current], s = stops[current];
+  $('mEyebrow').textContent = s.year ? s.year + ' · ' + c.tag : c.tag;
+  $('mTitle').textContent   = s.title;
+  $('mBody').textContent    = s.story;
+  $('mTelugu').textContent  = s.teluguMessage || '';
+  fillGallery('photoGallery', s.photos || []);
+  $('previewGallery').replaceChildren();
+  const future = (content.site.futureScenes || []).filter(
+    f => s.futureScene && (f.id === s.futureScene || s.futureScene === 'all')
+  );
+  fillGallery('futureGallery', future.map(f => ({
+    src: f.src,
+    caption: f.title + ' · An imagined possibility',
+  })));
+  // Final stop: append the birthday letter.
+  if (current === stops.length - 1) {
+    $('mBody').textContent   = s.story + '\n\n' + content.site.finalLetter;
+    $('mTelugu').textContent = content.site.finalTelugu || s.teluguMessage || '';
+  }
+  $('modalWrap').classList.add('show');
+  $('closeBtn').focus();
+}
+
+function closeModal() { $('modalWrap').classList.remove('show'); }
+
+// ── Button listeners ──────────────────────────────────────────────────────
+$('nextBtn').addEventListener('click', () =>
+  goTo(current === chapters.length - 1 ? 0 : current + 1)
+);
+$('prevBtn').addEventListener('click', () => goTo(current - 1));
+$('memoryBtn').addEventListener('click', openModal);
+$('closeBtn').addEventListener('click', closeModal);
+$('continueBtn').addEventListener('click', () => {
+  closeModal();
+  goTo(current === chapters.length - 1 ? 0 : current + 1);
+});
+$('photoInput').addEventListener('change', e => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  fillGallery('previewGallery', [{
+    src: URL.createObjectURL(file),
+    caption: 'Local preview only — add this file to assets/photos and update content.json to publish.',
+  }]);
+});
+$('modalWrap').addEventListener('click', e => {
+  if (e.target === $('modalWrap')) closeModal();
+});
+
+// ── Keyboard navigation (B7) ──────────────────────────────────────────────
+// ArrowRight / ArrowLeft  — next / previous milestone (when not travelling)
+// Enter or Space          — open the current memory panel (when stopped & no modal)
+// Escape                  — close an open memory panel
+//
+// Navigation is suppressed while the camera is travelling and inside any
+// focused form control (so typing in the photo file input still works).
+addEventListener('keydown', e => {
+  // Never steal keystrokes from form elements.
+  const tag = e.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
+  const modalOpen = $('modalWrap').classList.contains('show');
+
+  if (e.key === 'Escape') {
+    if (modalOpen) { e.preventDefault(); closeModal(); }
+    return;
+  }
+
+  // While the modal is open, let Tab / Enter / Space operate its buttons.
+  if (modalOpen) return;
+
+  if (e.key === 'ArrowRight' && !travelling) {
+    e.preventDefault();
+    if (current < chapters.length - 1) goTo(current + 1);
+  } else if (e.key === 'ArrowLeft' && !travelling) {
+    e.preventDefault();
+    if (current > 0) goTo(current - 1);
+  } else if ((e.key === 'Enter' || e.key === ' ') && stopped && !travelling) {
+    e.preventDefault();
+    openModal();
+  }
+});
+
+// ── Raycaster — click / tap on milestone rings ────────────────────────────
+const raycaster = new THREE.Raycaster();
+const pointer   = new THREE.Vector2();
+canvas.addEventListener('pointerup', e => {
+  if (travelling || $('modalWrap').classList.contains('show')) return;
+  pointer.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(markers.map(m => m.ring));
+  if (hits.length) {
+    const i = hits[0].object.userData.index;
+    if (i === current) openModal();
+    else goTo(i);
+  }
+});
+
+// ── Progress dots ─────────────────────────────────────────────────────────
+chapters.forEach((c, i) => {
+  const b = document.createElement('button');
+  b.className = 'dot' + (i === 0 ? ' active' : '');
+  b.title     = c.stop;
+  b.setAttribute('aria-label', 'Go to ' + c.stop);
+  b.addEventListener('click', () => goTo(i));
+  $('progress').appendChild(b);
+});
+
+// ── Tab visibility: prevent dt spike on restore (rendering stability) ─────
+// When a tab is hidden and re-shown, `now` in the RAF callback may be much
+// larger than lastFrame, causing a single enormous dt that snaps the camera.
+// Resetting lastFrame to the current time on visibility restore bounds dt to
+// the safe maximum of 100 ms on the very next frame.
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) lastFrame = performance.now();
+});
+
+// ── Window resize ─────────────────────────────────────────────────────────
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+});
+
+// ── Initialise ────────────────────────────────────────────────────────────
+camT = 0.012;
+cameraPose(camT);
+updateCopy();
+// Override the chapter counter to show a "ready" prompt before the first journey.
+$('count').textContent = 'READY TO BEGIN · 1 OF ' + chapters.length;
+$('loading').classList.add('hide');
+setTimeout(() => $('loading').remove(), 800);
+
+// Single RAF entry point — render() re-registers itself, so there is exactly
+// one running animation loop at all times. (Rendering stability)
+requestAnimationFrame(render);
 </script>
 </body>
 </html>
