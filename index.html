@@ -44,8 +44,6 @@ button:focus-visible{outline:3px solid #fff}
 .modal p{font-size:17px;line-height:1.7;color:#f5e8d4;white-space:pre-line}
 .photo{display:none;width:100%;max-height:300px;object-fit:cover;border-radius:14px;margin:12px 0 18px;border:1px solid #fff3d733}
 .modalActions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap}
-.upload{display:inline-flex;align-items:center;gap:8px;font:12px system-ui,sans-serif;color:#f5dfb8;margin-top:12px}
-.upload input{max-width:180px}
 
 /* ── Progress dots ── */
 .progress{position:fixed;left:50%;bottom:95px;transform:translateX(-50%);display:flex;gap:6px;z-index:2;pointer-events:auto}
@@ -64,7 +62,6 @@ button:focus-visible{outline:3px solid #fff}
 .photoGallery:empty{display:none}
 
 /* ── Misc ── */
-.smallNote{font:10px/1.5 system-ui,sans-serif;color:#fff3d58c;margin-top:10px}
 #mTelugu{color:#ffdc9d}
 .hud .hero{pointer-events:none}
 
@@ -130,11 +127,6 @@ button:focus-visible{outline:3px solid #fff}
     <p id="mBody"></p>
     <p id="mTelugu"></p>
     <div id="futureGallery" class="photoGallery"></div>
-    <label class="upload">Preview a photo locally
-      <input id="photoInput" type="file" accept="image/*">
-    </label>
-    <div id="previewGallery" class="photoGallery"></div>
-    <div class="smallNote">Photo preview is local to this browser. Add your final photos to the website before sharing it.</div>
     <div class="modalActions">
       <button id="closeBtn">Return to Road</button>
       <button class="primary" id="continueBtn">Continue the journey →</button>
@@ -638,7 +630,6 @@ function openModal() {
   $('mBody').textContent    = s.story;
   $('mTelugu').textContent  = s.teluguMessage || '';
   fillGallery('photoGallery', s.photos || []);
-  $('previewGallery').replaceChildren();
   const future = (content.site.futureScenes || []).filter(
     f => s.futureScene && (f.id === s.futureScene || s.futureScene === 'all')
   );
@@ -668,14 +659,6 @@ $('continueBtn').addEventListener('click', () => {
   closeModal();
   goTo(current === chapters.length - 1 ? 0 : current + 1);
 });
-$('photoInput').addEventListener('change', e => {
-  const file = e.target.files?.[0];
-  if (!file) return;
-  fillGallery('previewGallery', [{
-    src: URL.createObjectURL(file),
-    caption: 'Local preview only — add this file to assets/photos and update content.json to publish.',
-  }]);
-});
 $('modalWrap').addEventListener('click', e => {
   if (e.target === $('modalWrap')) closeModal();
 });
@@ -683,23 +666,25 @@ $('modalWrap').addEventListener('click', e => {
 // ── Keyboard navigation (B7) ──────────────────────────────────────────────
 // ArrowRight / ArrowLeft  — next / previous milestone (when not travelling)
 // Enter or Space          — open the current memory panel (when stopped & no modal)
-// Escape                  — close an open memory panel
+// Escape                  — close an open memory panel (works even when a
+//                           button inside the panel has focus)
 //
 // Navigation is suppressed while the camera is travelling and inside any
-// focused form control (so typing in the photo file input still works).
+// focused form control or interactive element.
 addEventListener('keydown', e => {
-  // Never steal keystrokes from form elements.
+  // Never steal keystrokes from form controls.
   const tag = e.target.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
 
   const modalOpen = $('modalWrap').classList.contains('show');
 
+  // Escape closes the panel regardless of which element inside it has focus.
   if (e.key === 'Escape') {
     if (modalOpen) { e.preventDefault(); closeModal(); }
     return;
   }
 
-  // While the modal is open, let Tab / Enter / Space operate its buttons.
+  // While the modal is open, let Tab / Enter / Space operate its own buttons.
   if (modalOpen) return;
 
   if (e.key === 'ArrowRight' && !travelling) {
@@ -709,6 +694,10 @@ addEventListener('keydown', e => {
     e.preventDefault();
     if (current > 0) goTo(current - 1);
   } else if ((e.key === 'Enter' || e.key === ' ') && stopped && !travelling) {
+    // Yield to buttons, links, and contenteditable elements — they handle
+    // their own activation. Only open the modal when focus is on a
+    // non-interactive element (canvas, document body, etc.).
+    if (tag === 'BUTTON' || tag === 'A' || e.target.isContentEditable) return;
     e.preventDefault();
     openModal();
   }
