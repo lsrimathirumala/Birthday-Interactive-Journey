@@ -4,43 +4,15 @@
     "recipient": "Nannagaru",
     "birthdayAge": 57,
     "intro": "57 years behind you. So many beautiful miles still ahead.",
-    "finalLetter": "Happy 57th birthday, Nannagaru.\n\nLook how far you’ve travelled, and look at all the life that still lies ahead.\n\nYou’ve spent so many years working hard, taking care of your responsibilities, and building a life for the people you love.\n\nBut your life is about more than the work you’ve done and the responsibilities you’ve carried. You deserve to enjoy the life you’ve worked so hard to build.\n\nThere are still places to see, experiences to discover, hobbies to explore, festivals to celebrate, and countless memories for us to make together.\n\nYou don't have to live every year at the same pace. It's okay to slow down and discover what makes you happy.\n\nAs you approach Shashtipoorthi, I hope you see it as another beautiful milestone, not a finish line.\n\nWe still have so much road ahead of us, Nanna. And I hope we get to travel a great deal of it together.\n\nHappy birthday. I love you. ❤️",
+    "finalLetter": "Happy 57th Birthday, Nannagaru! ❤️\n\nIf there's one thing we wish we could give you today, it's the chance to see yourself through our eyes, even if just for a moment.\n\nTo us, you've always been so much more than the person who takes care of everything. You're the person we've looked up to, learned from, laughed with, and grown up knowing we could always count on.\n\nAs we've grown older, we've begun to understand things we probably took for granted when we were little. The thought you've put into our lives, the countless ways you've looked out for us, and the love you've shown in ways that didn't always need words.\n\nWe may not say it often enough, Dad, but we notice. And we appreciate you more than you know.\n\nLooking through all these photographs, it's amazing how much has changed. We've grown up, life has taken us in different directions, and the years seem to have passed before any of us quite realised it. But no matter how old we get or where life takes us, we'll always be your children, and you'll always be our Dad.\n\nAnd if there's one thing we want you to remember as you turn 57, it's that you don't always have to be the one thinking about everyone else. Your happiness matters to us just as much as ours has always mattered to you.\n\nWe hope the coming years bring you moments that are entirely your own, things that make you smile for no particular reason, and days that leave you feeling genuinely happy.\n\nWe don't know exactly what the years ahead will look like. But we do know that we want you to be a part of so many of our happiest moments, just as you've been a part of everything that brought us here.\n\nAnd we hope we get to be there for so many of yours, too.\n\nSo here's to 57 years of your story, Dad. To everything that has made you who you are, and to all the wonderful things that are still waiting to become part of it.\n\nHappy Birthday, Nannagaru. We love you, always. ❤️\n\nWith all our love,\nTejaswini & Sudhu",
     "finalTelugu": "",
     "audioSrc": "",
     "futureScenes": [
       {
-        "id": "family-adventures",
-        "title": "Family Adventures",
-        "src": "assets/future/family-adventures.svg",
-        "caption": "Scenic holidays, mountain trips, and time exploring together.",
-        "enabled": true
-      },
-      {
-        "id": "unhurried-mornings",
-        "title": "Unhurried Mornings",
-        "src": "assets/future/unhurried-mornings.svg",
-        "caption": "Peaceful mornings, beautiful views, tea, and time to simply be.",
-        "enabled": true
-      },
-      {
-        "id": "rediscovering-interests",
-        "title": "Rediscovering Interests",
-        "src": "assets/future/rediscovering-interests.svg",
-        "caption": "Hobbies, creativity, and the things that make you happy.",
-        "enabled": true
-      },
-      {
-        "id": "more-family-memories",
-        "title": "More Family Memories",
-        "src": "assets/future/more-family-memories.svg",
-        "caption": "Celebrations, festivals, and everyday moments together.",
-        "enabled": true
-      },
-      {
-        "id": "years-ahead",
-        "title": "The Years Ahead",
-        "src": "assets/future/years-ahead.svg",
-        "caption": "Freedom, curiosity, and meaningful time with loved ones.",
+        "id": "our-next-chapter",
+        "title": "Our Next Chapter",
+        "src": "assets/future/our-next-chapter.png",
+        "caption": "So many more memories waiting to be made, together.",
         "enabled": true
       }
     ]
@@ -52,9 +24,14 @@
       "subtitle": "Every journey starts somewhere.",
       "headline": "The beginning of a beautiful story.",
       "year": "",
-      "story": "[Add a memory of his childhood, dreams, and beginnings.]",
+      "story": "Every journey begins long before we know where life will take us.\n\nThere was once a young boy with dreams, hopes, and an entire future waiting to unfold. He couldn't have known all the places life would take him, the challenges he would overcome, or the family he would one day build.\n\nLooking back at these early chapters reminds us just how far you've come, Nannagaru.\n\nAnd the beautiful thing is, your story is still being written.",
       "teluguMessage": "",
-      "photos": [],
+      "photos": [
+        {
+          "src": "assets/photos/childhood/dad-school.jpg",
+          "caption": "A glimpse into his school days — where the journey began."
+        }
+      ],
       "futureScene": "",
       "sceneType": "beginning",
       "roadPosition": 0.08,
@@ -64,12 +41,17 @@
     {
       "id": "road-built",
       "title": "The Road You Built",
-      "subtitle": "The work, the dedication, the journey.",
+      "subtitle": "Every mile has brought you further than you once imagined.",
       "headline": "All that you have built.",
       "year": "",
-      "story": "[Add his career memories, achievements, and experiences.]",
+      "story": "There are so many years between that young boy in the school photograph and the person standing here today.\n\nYears of learning, working hard, making decisions, facing challenges, and finding your way forward, one step at a time.\n\nYou've built a career, crossed oceans, and come a long way from where your journey began. And behind all of that are years of dedication, perseverance, and quiet determination.\n\nI hope you take a moment to look back and feel proud of everything you've accomplished, Nannagaru.\n\nBecause sometimes, when we're busy looking toward the next responsibility, we forget to appreciate just how far we've already travelled.",
       "teluguMessage": "",
-      "photos": [],
+      "photos": [
+        {
+          "src": "assets/photos/career/dad-us.jpg",
+          "caption": "A journey of hard work, perseverance, and new horizons."
+        }
+      ],
       "futureScene": "",
       "sceneType": "building",
       "roadPosition": 0.24,
@@ -79,12 +61,41 @@
     {
       "id": "family",
       "title": "The Family We Built Together",
-      "subtitle": "A thousand ordinary moments became our extraordinary life.",
+      "subtitle": "The people who made every journey worthwhile.",
       "headline": "The people who made it home.",
       "year": "",
-      "story": "[Add memories of Mom, raising us, celebrations, and your favourite family stories.]",
+      "story": "Somewhere along the way, your journey became our journey.\n\nYou and Amma built a family, and with it came a lifetime of moments that we will always carry with us.\n\nLooking at these photographs, I see more than just how much we've grown. I see all the years we've spent together, the places we've been, the celebrations we've shared, and the countless ordinary days that became memories without us even realising it.\n\nFrom the days when Sudhu and I were little to the people we're becoming today, you've been there through so many chapters of our lives.\n\nAnd while the years have changed all of us, one thing hasn't changed: you're still our Dad, and we'll always be your children, no matter how old we get.\n\nThere are so many memories behind us, and I hope we have countless more waiting ahead.\n\nBecause the best part of this journey has always been getting to share it together.",
       "teluguMessage": "",
-      "photos": [],
+      "photos": [
+        {
+          "src": "assets/photos/family/family-1.jpg",
+          "caption": "The early chapters of our family story."
+        },
+        {
+          "src": "assets/photos/family/family-2.jpg",
+          "caption": "The two people who started it all."
+        },
+        {
+          "src": "assets/photos/family/family-3.jpg",
+          "caption": "Little adventures, lasting memories."
+        },
+        {
+          "src": "assets/photos/family/family-4.jpg",
+          "caption": "The places we've explored together."
+        },
+        {
+          "src": "assets/photos/family/family-5.jpg",
+          "caption": "No matter how much we grow, we'll always be your little ones."
+        },
+        {
+          "src": "assets/photos/family/family-6.jpg",
+          "caption": "Together, through every chapter."
+        },
+        {
+          "src": "assets/photos/family/family-7.jpg",
+          "caption": "More moments to remember."
+        }
+      ],
       "futureScene": "",
       "sceneType": "family",
       "roadPosition": 0.42,
@@ -94,13 +105,34 @@
     {
       "id": "beyond-work",
       "title": "A Life Beyond Work",
-      "subtitle": "Time to rest, explore, and enjoy.",
+      "subtitle": "There's still so much life to enjoy.",
       "headline": "There is more than work ahead.",
       "year": "",
-      "story": "You deserve unhurried mornings, new interests, time with family, and all the small joys that make life beautiful.",
+      "story": "The next chapter doesn't have to look like the last one. There can be family trips, places you've always wanted to see, hobbies to rediscover, unhurried mornings, and time to simply enjoy the life you've built.\n\nYou don't have to race toward every next thing. You're allowed to slow down, rest, and choose what makes you happy.",
       "teluguMessage": "",
-      "photos": [],
-      "futureScene": "unhurried-mornings",
+      "photos": [
+        {
+          "src": "assets/photos/travel/travel-1.jpg",
+          "caption": "The beautiful places we've discovered together."
+        },
+        {
+          "src": "assets/photos/travel/travel-2.jpg",
+          "caption": "Some of the best memories are made along the way."
+        },
+        {
+          "src": "assets/photos/travel/travel-3.jpg",
+          "caption": "Little adventures that became lasting memories."
+        },
+        {
+          "src": "assets/photos/travel/travel-4.jpg",
+          "caption": "There's always another beautiful place waiting to be explored."
+        },
+        {
+          "src": "assets/photos/travel/travel-5.jpg",
+          "caption": "And so many more adventures still ahead."
+        }
+      ],
+      "futureScene": "",
       "sceneType": "renewal",
       "roadPosition": 0.63,
       "markerLabel": "A new chapter",
@@ -109,13 +141,13 @@
     {
       "id": "future",
       "title": "The Best Is Yet to Come",
-      "subtitle": "A whole horizon ahead.",
+      "subtitle": "The most beautiful chapters may still be waiting.",
       "headline": "The best is yet to come.",
       "year": "",
       "story": "There are still places to explore, celebrations to share, hobbies to discover, and so many memories for us to make together.",
       "teluguMessage": "",
       "photos": [],
-      "futureScene": "all",
+      "futureScene": "our-next-chapter",
       "sceneType": "future",
       "roadPosition": 0.88,
       "markerLabel": "The golden horizon",

@@ -101,7 +101,7 @@ button:focus-visible{outline:3px solid #fff}
 .gallery-viewport{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden}
 
 /* Individual frames — stacked; .active is the only visible one */
-.gallery-frame{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:10px;opacity:0;transition:opacity .32s ease;pointer-events:none}
+.gallery-frame{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:10px;opacity:0;transition:opacity .6s ease;pointer-events:none}
 .gallery-frame.active{opacity:1;pointer-events:auto}
 @media(prefers-reduced-motion:reduce){.gallery-frame{transition:none}}
 
@@ -141,6 +141,18 @@ button:focus-visible{outline:3px solid #fff}
 .gallery-caption{font:italic 12px/1.5 system-ui,sans-serif;color:#9c8a68;margin:0;flex:1}
 .gallery-caption:empty{display:none}
 .gallery-counter{font:600 10px/1 system-ui,sans-serif;letter-spacing:.1em;color:rgba(255,213,138,.42);white-space:nowrap;flex-shrink:0}
+
+/* ── Slideshow pause/play control — unobtrusive, in the gallery footer ── */
+.gallery-pp{
+  width:22px;height:22px;min-width:22px;padding:0;border-radius:50%;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,213,138,.55);font-size:9px;line-height:1;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .2s,color .2s
+}
+.gallery-pp:hover{background:rgba(255,255,255,.14);color:rgba(255,213,138,.9)}
+.gallery-pp:focus-visible{outline:3px solid #fff}
+@media(prefers-reduced-motion:reduce){.gallery-pp{display:none}}
 
 /* ── Photo lightbox (full-screen viewer, z-index 50 above the panel) ── */
 .lightbox{
@@ -412,11 +424,6 @@ button:focus-visible{outline:3px solid #fff}
 
     <!-- Optional Telugu closing (hidden when empty) -->
     <div class="letter-telugu" id="ltrTelugu" hidden aria-label="Message in Telugu"></div>
-
-    <!-- Signature -->
-    <div class="letter-sig-wrap" aria-hidden="true">
-      <span class="letter-sig">With all my love ❤️</span>
-    </div>
 
     <!-- Navigation -->
     <div class="letter-actions">
@@ -969,6 +976,16 @@ function mkEl(tag, cls) {
 //   • Touch: horizontal swipe (>40 px) navigates between photos.
 //   • Broken images → friendly placeholder, no broken-image browser icon.
 //   • Empty gallery → host element hidden via hidden attribute.
+// ── Gallery slideshow timer registry ──────────────────────────────────────
+// Every active auto-advance setTimeout ID is stored here so that
+// openModal() / closeModal() can cancel all of them atomically — preventing
+// orphaned timers from continuing to fire after the popup is closed.
+const _galleryTimers = new Set();
+function _clearGalleryTimers() {
+  _galleryTimers.forEach(t => clearTimeout(t));
+  _galleryTimers.clear();
+}
+
 function fillGallery(id, photos) {
   const host  = $(id);
   host.replaceChildren();
@@ -1073,6 +1090,94 @@ function fillGallery(id, photos) {
       total > 1 ? `Photograph ${idx + 1} of ${total}` : 'Photograph viewer');
   }
 
+  // ── Automatic slideshow ────────────────────────────────────────────────
+  // Only active for multi-photo galleries. Skipped entirely when the visitor
+  // prefers reduced motion (the CSS already removes crossfade transitions too).
+  const _prefRM = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if (total > 1 && !_prefRM) {
+    let paused  = false;   // true when visitor clicks Pause
+    let timerId = null;    // current pending setTimeout ID (null when idle)
+
+    // Stop the running timer (safe to call when already idle).
+    const _stopTick = () => {
+      if (timerId !== null) {
+        clearTimeout(timerId);
+        _galleryTimers.delete(timerId);
+        timerId = null;
+      }
+    };
+
+    // Schedule the next tick in 5 s (no-ops when paused or tab hidden).
+    const _startTick = () => {
+      _stopTick();                               // never double-schedule
+      if (paused || document.hidden) return;
+      timerId = setTimeout(_tick, 5000);
+      _galleryTimers.add(timerId);
+    };
+
+    // Auto-advance callback.
+    // Checks conditions before advancing so the timer can stay live while
+    // the lightbox is open — when the lightbox closes the next tick fires.
+    const _tick = () => {
+      _galleryTimers.delete(timerId);            // remove fired ID from registry
+      timerId = null;
+      if (!$('modalWrap').classList.contains('show')) return;  // popup closed — stop
+      if (!$('photoLightbox').classList.contains('open')) navigate(1); // advance if no lightbox
+      _startTick();                              // reschedule (respects pause/hidden)
+    };
+
+    // ── Pause/Play button ────────────────────────────────────────────────
+    const ppBtn = mkEl('button', 'gallery-pp');
+    const _syncPP = () => {
+      ppBtn.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow');
+      ppBtn.setAttribute('aria-pressed', String(!paused));
+      ppBtn.textContent = paused ? '▶' : '⏸';
+    };
+    _syncPP();
+    ppBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      paused = !paused; _syncPP();
+      paused ? _stopTick() : _startTick();
+    });
+    // Placed first in footer — caption and counter are appended after (in Assemble).
+    footer.appendChild(ppBtn);
+
+    // ── Reset timer on manual navigation ────────────────────────────────
+    // Additional listeners on the nav buttons, keyboard, and swipe fire AFTER
+    // the existing navigate() handlers, restarting the 5 s countdown.
+    stage.querySelectorAll('.gallery-nav').forEach(btn =>
+      btn.addEventListener('click', () => { _stopTick(); if (!paused) _startTick(); })
+    );
+    stage.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        _stopTick(); if (!paused) _startTick();
+      }
+    });
+    viewport.addEventListener('touchend', () => {
+      // Slight delay so navigate()'s touchend handler fires first.
+      setTimeout(() => { _stopTick(); if (!paused) _startTick(); }, 20);
+    });
+
+    // ── Pause on hover and focus (desktop accessibility) ─────────────────
+    stage.addEventListener('mouseenter', _stopTick);
+    stage.addEventListener('mouseleave', () => { if (!paused) _startTick(); });
+    // Pause while keyboard focus is anywhere inside the gallery.
+    stage.addEventListener('focusin',  _stopTick);
+    stage.addEventListener('focusout', e => {
+      if (!stage.contains(e.relatedTarget) && !paused) _startTick();
+    });
+
+    // ── Pause when browser tab is hidden ─────────────────────────────────
+    const _onVis = () => {
+      if (document.hidden) _stopTick();
+      else if (!paused && $('modalWrap').classList.contains('show')) _startTick();
+    };
+    document.addEventListener('visibilitychange', _onVis);
+
+    // Kick off — the first tick fires 5 s after the popup opens.
+    _startTick();
+  }
+
   // ── Assemble ──────────────────────────────────────────────────────────
   stage.insertBefore(viewport, stage.firstChild);
   if (counter) footer.append(caption, counter);
@@ -1172,6 +1277,8 @@ function openModal() {
   if (continueBtn) continueBtn.hidden = isFinal;
 
   // ── Photo galleries ────────────────────────────────────────────────────
+  // Cancel any timers from a previous modal open before building new galleries.
+  _clearGalleryTimers();
   fillGallery('photoGallery', s.photos || []);
   const future = (content.site.futureScenes || []).filter(
     f => f.enabled !== false && s.futureScene && (f.id === s.futureScene || s.futureScene === 'all')
@@ -1193,6 +1300,8 @@ function openModal() {
 }
 
 function closeModal() {
+  // Stop all gallery auto-advance timers before hiding the popup.
+  _clearGalleryTimers();
   const wrap = $('modalWrap');
   wrap.classList.remove('show');
   wrap.setAttribute('aria-hidden', 'true');
