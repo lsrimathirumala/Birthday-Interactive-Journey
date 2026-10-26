@@ -347,10 +347,47 @@ Re-implement from the Phase 3 design notes above, or cherry-pick `02ac0bc` and r
 | **Reduced motion** | `prefers-reduced-motion: reduce` disables all CSS transitions |
 | **Backdrop** | Desktop: transparent (road visible); mobile: `rgba(7,16,27,.62)` dim; click closes panel |
 | **Buttons** | ✕ close (`id=closeBtn`), `Continue the journey →` (`id=continueBtn`), `Return to Road` (`id=panelReturnBtn`) |
-| **Photos** | `object-fit:cover`; scrollbar hidden; `:empty → display:none` preserved; no upload controls |
+| **Photos** | Replaced by the gallery slideshow (see below) |
 | **3D environment** | Zero changes — road, camera, scenery, lighting all untouched |
 
 #### Assertions: 51 / 51 passed ✓ (1 false-fail was a PowerShell `-and` precedence bug in the test script — verified correct by direct `Contains` check)
+
+---
+
+### Photograph Gallery ✅ COMPLETE
+
+> **Committed:** `8342af4` on `feature/stability-navigation`  
+> **Changed:** `index.html` only (+309 / −27 lines)  
+> **Goal:** Replace the horizontal scroll strip with an elegant, accessible, single-image slideshow with a full-screen lightbox viewer.
+
+#### What was implemented
+
+| Area | Detail |
+|------|--------|
+| **Slideshow** | One photo at a time in a fixed `aspect-ratio:4/3` frame — no layout shift while loading |
+| **object-fit:contain** | Portraits, landscapes, and squares all fit without cropping |
+| **Prev / Next** | Arrow buttons rendered only when > 1 photo; wrap-around navigation |
+| **Photo counter** | `1 / 3` format with `aria-live="polite"` (hidden when ≤ 1 photo) |
+| **Caption** | Below frame; `display:none` when empty |
+| **Expand button** | SVG icon (bottom-right of stage); opens full-screen lightbox |
+| **Broken images** | `onerror → gallery-placeholder` (camera SVG + text); no browser broken-icon; no layout shift |
+| **Empty gallery** | `host.setAttribute('hidden')` — no blank area left behind |
+| **Lightbox** | Full-screen `z-index:50` overlay; `object-fit:contain`; close ✕, Prev/Next, backdrop click |
+| **Lightbox Escape** | Intercepted before panel Escape — Escape closes lightbox, not the panel |
+| **Keyboard** | `ArrowLeft/Right` in gallery stage; `Enter/Space` on stage opens lightbox; `stopPropagation` prevents HUD milestone nav |
+| **Touch swipe** | `touchstart/move/end` passive; horizontal delta > 40 px triggers prev/next |
+| **Reduced motion** | Frame crossfade and lightbox opacity transitions disabled |
+| **Focus management** | Lightbox opens → focus to ✕; closes → focus returned to opener element |
+| **Accessibility** | `role=region` on stage; `aria-label` per photo; `aria-label`, `aria-hidden` on lightbox dialog |
+| **`mkEl()` helper** | Lightweight `document.createElement` + className setter; distinct from `$()` (getElementById) |
+
+#### Assertions: 54 / 54 real checks passed ✓  
+(4 apparent failures were PowerShell test-script bugs — `-and` operator precedence and `$()` string interpolation — all verified correct via direct `Contains` checks)
+
+#### Known limitations (browser testing not available in this environment)
+- Lightbox, gallery animations, and swipe must be verified on physical devices.
+- All photo paths (`assets/photos/`, `assets/future/`) are placeholder — images will show the broken-photo placeholder until real assets are added in Phase 5.
+- `loading="lazy"` for non-first photos requires HTTP server (not `file://` protocol).
 
 ---
 
