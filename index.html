@@ -6,6 +6,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#172033">
 <title>The Best Is Yet to Come · For Nannagaru</title>
+<!-- Noto Sans Telugu: correct glyph rendering for Telugu-script messages -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ── Base ── */
 :root{--gold:#ffd58a;--cream:#fff3df;--ink:#172033;--glass:rgba(15,22,36,.82);--muted:#e2d5c0}
@@ -35,15 +39,90 @@ button.primary{background:var(--gold);color:#282014;border-color:var(--gold)}
 button:disabled{opacity:.45;cursor:default;transform:none}
 button:focus-visible{outline:3px solid #fff}
 
-/* ── Memory modal ── */
-.modalWrap{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:#07101bb3;backdrop-filter:blur(9px);z-index:5}
-.modalWrap.show{display:flex}
-.modal{width:min(640px,100%);max-height:88vh;overflow:auto;background:linear-gradient(145deg,#25364a,#121d2e 75%);border:1px solid #ffe2a344;border-radius:24px;padding:clamp(22px,5vw,42px);box-shadow:0 24px 100px #0008}
-.modal .eyebrow{margin-bottom:10px}
-.modal h2{font-size:clamp(30px,5vw,48px);line-height:1.05;font-weight:400;margin:0 0 18px}
-.modal p{font-size:17px;line-height:1.7;color:#f5e8d4;white-space:pre-line}
-.photo{display:none;width:100%;max-height:300px;object-fit:cover;border-radius:14px;margin:12px 0 18px;border:1px solid #fff3d733}
-.modalActions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap}
+/* ── Memory panel: cinematic side-panel (desktop) / bottom-sheet (mobile) ── */
+/* visibility:hidden instead of display:none lets CSS transforms animate in/out */
+.panelWrap{position:fixed;inset:0;z-index:5;visibility:hidden;pointer-events:none;transition:visibility 0s .5s}
+.panelWrap.show{visibility:visible;pointer-events:auto;transition:visibility 0s}
+
+/* Soft backdrop — suppressed on wide screens, dims scene on mobile */
+.panelBackdrop{position:absolute;inset:0;background:transparent;transition:background .45s ease}
+.panelWrap.show .panelBackdrop{background:rgba(7,16,27,.45)}
+@media(min-width:900px){.panelBackdrop{background:transparent!important;pointer-events:none}}
+
+/* ── Story panel ── */
+.panel{
+  position:absolute;top:0;right:0;bottom:0;width:min(460px,100%);
+  background:linear-gradient(165deg,#1c2e44 0%,#111d2f 58%,#0c1623 100%);
+  border-left:1px solid rgba(255,220,145,.16);
+  padding:clamp(48px,6vw,68px) clamp(22px,4vw,44px) clamp(28px,4vw,48px);
+  overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;
+  transform:translateX(102%);transition:transform .52s cubic-bezier(.16,1,.3,1);
+  box-shadow:-16px 0 64px rgba(0,0,0,.55);will-change:transform;
+  scrollbar-width:thin;scrollbar-color:rgba(255,213,138,.2) transparent
+}
+.panelWrap.show .panel{transform:translateX(0)}
+
+/* ── Mobile: bottom sheet ── */
+@media(max-width:899px){
+  .panelWrap.show .panelBackdrop{background:rgba(7,16,27,.62)}
+  .panel{
+    top:auto;left:0;right:0;width:100%;max-height:82dvh;
+    border-left:none;border-top:1px solid rgba(255,220,145,.18);
+    border-radius:22px 22px 0 0;
+    padding:0 clamp(18px,5vw,28px) max(24px,calc(16px + env(safe-area-inset-bottom,0px)));
+    transform:translateY(102%);box-shadow:0 -16px 64px rgba(0,0,0,.55)
+  }
+  .panelWrap.show .panel{transform:translateY(0)}
+  /* Drag-handle pill */
+  .panel::before{
+    content:'';display:block;flex-shrink:0;
+    width:40px;height:4px;border-radius:2px;
+    background:rgba(255,255,255,.22);margin:14px auto 20px
+  }
+}
+@media(prefers-reduced-motion:reduce){.panel,.panelBackdrop{transition:none}}
+
+/* ── Panel close button ── */
+.panel-close{
+  position:sticky;top:0;float:right;flex-shrink:0;
+  margin:-4px -4px 10px 12px;
+  width:36px;height:36px;min-width:36px;padding:0;border-radius:50%;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);
+  color:#c4b492;font-size:14px;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .2s
+}
+.panel-close:hover{background:rgba(255,255,255,.18)}
+.panel-close:focus-visible{outline:3px solid #fff}
+
+/* ── Panel typography ── */
+.panel-year{font:600 10px/1.5 system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.panel-title{font:400 clamp(24px,3.5vw,40px)/1.08 Georgia,'Times New Roman',serif;letter-spacing:-.03em;color:var(--cream);margin:0 0 10px}
+.panel-subtitle{font:italic clamp(13px,1.5vw,16px)/1.6 Georgia,serif;color:rgba(255,240,205,.62);margin:0 0 22px}
+.panel-rule{width:44px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:0 0 22px;border:none;flex-shrink:0}
+
+/* ── Story paragraphs ── */
+.panel-story{display:flex;flex-direction:column;gap:16px;margin-bottom:18px}
+.panel-story p{font-size:clamp(14px,1.4vw,16px);line-height:1.85;color:#ede0cc;margin:0}
+
+/* ── Telugu message ── */
+.panel-telugu{
+  border-top:1px solid rgba(255,218,130,.12);padding-top:14px;margin-bottom:16px;
+  font-size:clamp(15px,1.7vw,19px);line-height:1.9;color:#ffdc9d;
+  font-family:'Noto Sans Telugu','Potti Sreeramulu',system-ui,sans-serif
+}
+
+/* ── Photo galleries ── */
+.photoGallery{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:8px 0 20px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.photoGallery::-webkit-scrollbar{display:none}
+.photoGallery figure{margin:0;min-width:min(230px,82%);max-width:320px;flex-shrink:0;scroll-snap-align:start}
+.photoGallery img{width:100%;height:160px;object-fit:cover;background:#0a1423;border-radius:12px;border:1px solid rgba(255,240,200,.1)}
+.photoGallery figcaption{font:11px/1.4 system-ui,sans-serif;color:#c4b090;margin:6px 4px 0}
+.photoGallery:empty{display:none}
+
+/* ── Panel action buttons ── */
+.panel-actions{margin-top:auto;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;gap:9px}
+.panel-actions .panel-continue{width:100%;text-align:center;padding:14px;font-size:13px}
+.panel-actions .panel-return{width:100%;text-align:center;font-size:11px;color:rgba(255,240,200,.65);background:transparent;border-color:rgba(255,240,200,.15)}
 
 /* ── Progress dots ── */
 .progress{position:fixed;left:50%;bottom:95px;transform:translateX(-50%);display:flex;gap:6px;z-index:2;pointer-events:auto}
@@ -54,15 +133,7 @@ button:focus-visible{outline:3px solid #fff}
 .loading{position:fixed;inset:0;display:grid;place-items:center;background:#111b2a;z-index:10;font:13px system-ui,sans-serif;color:#ffe0a0;letter-spacing:.08em;transition:opacity .6s}
 .loading.hide{opacity:0;pointer-events:none}
 
-/* ── Photo galleries ── */
-.photoGallery{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:12px 0}
-.photoGallery figure{margin:0;min-width:min(250px,85%);max-width:350px;scroll-snap-align:start}
-.photoGallery img{width:100%;height:180px;object-fit:contain;background:#0a1423;border-radius:12px}
-.photoGallery figcaption{font:12px/1.4 system-ui,sans-serif;color:#e9d6b3;margin:5px}
-.photoGallery:empty{display:none}
-
 /* ── Misc ── */
-#mTelugu{color:#ffdc9d}
 .hud .hero{pointer-events:none}
 
 /* ── iOS safe-area insets ──────────────────────────────────────────────────
@@ -82,8 +153,7 @@ button:focus-visible{outline:3px solid #fff}
   .controls button{padding:11px 13px;font-size:11px}
   .progress{bottom:calc(94px + env(safe-area-inset-bottom, 0px))}
   .brand{font-size:9px}
-  .modalWrap{align-items:flex-end;padding:8px}
-  .modal{max-height:67dvh;padding:20px;padding-bottom:max(20px, calc(12px + env(safe-area-inset-bottom, 0px)));border-radius:18px}
+  /* Panel mobile overrides handled inside the 899px breakpoint in the panel block */
 }
 </style>
 </head>
@@ -119,17 +189,48 @@ button:focus-visible{outline:3px solid #fff}
 
 <div class="progress" id="progress" aria-label="Journey stops"></div>
 
-<div class="modalWrap" id="modalWrap">
-  <article class="modal">
-    <div class="eyebrow" id="mEyebrow">A moment along the way</div>
-    <h2 id="mTitle">A life well travelled</h2>
-    <div id="photoGallery" class="photoGallery"></div>
-    <p id="mBody"></p>
-    <p id="mTelugu"></p>
-    <div id="futureGallery" class="photoGallery"></div>
-    <div class="modalActions">
-      <button id="closeBtn">Return to Road</button>
-      <button class="primary" id="continueBtn">Continue the journey →</button>
+<!--
+  Memory panel — cinematic side panel on desktop, bottom sheet on mobile.
+  All id="" values preserved: openModal/closeModal and listener setup rely on them.
+  role="dialog" + aria-modal + aria-labelledby provide correct AT semantics.
+  Initial aria-hidden="true" removed when panel opens; restored on close.
+-->
+<div class="panelWrap" id="modalWrap"
+     role="dialog" aria-modal="true" aria-labelledby="mTitle" aria-hidden="true">
+
+  <!-- Backdrop: click closes panel (full-screen, behind .panel in stacking order) -->
+  <div class="panelBackdrop" id="panelBackdrop" aria-hidden="true"></div>
+
+  <article class="panel">
+    <!-- ✕ close button — sticky at the top-right corner of the panel -->
+    <button class="panel-close" id="closeBtn" aria-label="Return to road">✕</button>
+
+    <!-- Stop identity ────────────────────────────────────────────────────── -->
+    <!-- mEyebrow  ← s.year + ' · ' + c.tag  (set by openModal) -->
+    <div class="panel-year" id="mEyebrow"></div>
+    <!-- mTitle    ← s.title (stop headline, set by openModal) -->
+    <h2 class="panel-title" id="mTitle"></h2>
+    <!-- mSubtitle ← c.subtitle (set by openModal) -->
+    <p class="panel-subtitle" id="mSubtitle"></p>
+    <hr class="panel-rule" aria-hidden="true">
+
+    <!-- Configured photos (empty = gallery hides itself via :empty) -->
+    <div id="photoGallery" class="photoGallery" aria-label="Photographs"></div>
+
+    <!-- Story body: openModal injects <p> per paragraph (split on \n\n) -->
+    <div class="panel-story" id="mBody"></div>
+
+    <!-- Telugu message: hidden attr managed by openModal / removed when empty -->
+    <div class="panel-telugu" id="mTelugu" hidden aria-label="Message in Telugu"></div>
+
+    <!-- Future-scene gallery (last stop only) -->
+    <div id="futureGallery" class="photoGallery" aria-label="Future possibilities"></div>
+
+    <!-- Navigation ─────────────────────────────────────────────────────── -->
+    <div class="panel-actions">
+      <button class="primary panel-continue" id="continueBtn">Continue the journey →</button>
+      <!-- Secondary close — identical behaviour to ✕, just a labelled text button -->
+      <button class="panel-return" id="panelReturnBtn">Return to Road</button>
     </div>
   </article>
 </div>
@@ -680,13 +781,51 @@ function fillGallery(id, photos) {
   }
 }
 
-// ── UI: modal open/close ──────────────────────────────────────────────────
+// ── UI: memory panel open / close ────────────────────────────────────────
+
 function openModal() {
   const c = chapters[current], s = stops[current];
-  $('mEyebrow').textContent = s.year ? s.year + ' · ' + c.tag : c.tag;
-  $('mTitle').textContent   = s.title;
-  $('mBody').textContent    = s.story;
-  $('mTelugu').textContent  = s.teluguMessage || '';
+  const isFinal = current === stops.length - 1;
+
+  // ── Stop identity ──────────────────────────────────────────────────────
+  // Eyebrow: year badge · stop title tag
+  $('mEyebrow').textContent  = s.year ? s.year + ' · ' + c.tag : c.tag;
+  // Headline (the stop's main title)
+  $('mTitle').textContent    = s.title;
+  // Subtitle (narrative tagline)
+  $('mSubtitle').textContent = c.subtitle || '';
+
+  // ── Story body: split on blank lines → individual <p> elements ────────
+  // Using <p> per paragraph gives proper semantic spacing and avoids a wall
+  // of text. pre-line whitespace-mode is replaced by explicit DOM structure.
+  const rawStory = isFinal
+    ? s.story + '\n\n' + content.site.finalLetter
+    : s.story;
+
+  const storyEl = $('mBody');
+  storyEl.innerHTML = '';
+  rawStory.split(/\n{2,}/).forEach(para => {
+    const trimmed = para.trim();
+    if (!trimmed) return;
+    const p = document.createElement('p');
+    p.textContent = trimmed;
+    storyEl.appendChild(p);
+  });
+
+  // ── Telugu message: hide section when empty ───────────────────────────
+  const teluguEl = $('mTelugu');
+  const teluguText = isFinal
+    ? (content.site.finalTelugu || s.teluguMessage || '').trim()
+    : (s.teluguMessage || '').trim();
+  if (teluguText) {
+    teluguEl.textContent = teluguText;
+    teluguEl.removeAttribute('hidden');
+  } else {
+    teluguEl.textContent = '';
+    teluguEl.setAttribute('hidden', '');
+  }
+
+  // ── Photo galleries ────────────────────────────────────────────────────
   fillGallery('photoGallery', s.photos || []);
   const future = (content.site.futureScenes || []).filter(
     f => s.futureScene && (f.id === s.futureScene || s.futureScene === 'all')
@@ -695,31 +834,47 @@ function openModal() {
     src: f.src,
     caption: f.title + ' · An imagined possibility',
   })));
-  // Final stop: append the birthday letter.
-  if (current === stops.length - 1) {
-    $('mBody').textContent   = s.story + '\n\n' + content.site.finalLetter;
-    $('mTelugu').textContent = content.site.finalTelugu || s.teluguMessage || '';
-  }
-  $('modalWrap').classList.add('show');
+
+  // ── Show panel and manage accessibility ───────────────────────────────
+  const wrap = $('modalWrap');
+  wrap.setAttribute('aria-hidden', 'false');
+  wrap.classList.add('show');
+  // Scroll panel back to top in case it was scrolled on a previous visit.
+  const panel = wrap.querySelector('.panel');
+  if (panel) panel.scrollTop = 0;
+  // Focus the close button — first interactive element in the panel.
   $('closeBtn').focus();
 }
 
-function closeModal() { $('modalWrap').classList.remove('show'); }
+function closeModal() {
+  const wrap = $('modalWrap');
+  wrap.classList.remove('show');
+  wrap.setAttribute('aria-hidden', 'true');
+  // Return focus to the HUD button the visitor used to open the panel.
+  $('memoryBtn').focus();
+}
 
+// ── Button listeners ──────────────────────────────────────────────────────
 // ── Button listeners ──────────────────────────────────────────────────────
 $('nextBtn').addEventListener('click', () =>
   goTo(current === chapters.length - 1 ? 0 : current + 1)
 );
 $('prevBtn').addEventListener('click', () => goTo(current - 1));
 $('memoryBtn').addEventListener('click', openModal);
+
+// Panel close: ✕ button (top corner) and the text "Return to Road" button.
 $('closeBtn').addEventListener('click', closeModal);
+$('panelReturnBtn').addEventListener('click', closeModal);
+
+// Continue: closes panel then advances to the next stop (wraps at end).
 $('continueBtn').addEventListener('click', () => {
   closeModal();
   goTo(current === chapters.length - 1 ? 0 : current + 1);
 });
-$('modalWrap').addEventListener('click', e => {
-  if (e.target === $('modalWrap')) closeModal();
-});
+
+// Clicking the backdrop (the area outside the panel, or directly the wrapper
+// on desktop where the backdrop covers the full left side) also closes the panel.
+$('panelBackdrop').addEventListener('click', closeModal);
 
 // ── Keyboard navigation (B7) ──────────────────────────────────────────────
 // ArrowRight / ArrowLeft  — next / previous milestone (when not travelling)
