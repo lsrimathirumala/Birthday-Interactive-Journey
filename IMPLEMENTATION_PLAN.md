@@ -287,9 +287,41 @@ On mid-range mobile (iPhone SE, Android mid-tier), sustained 60 fps is unlikely 
 
 *Estimated draw-call reduction: ~98.7% for scenery geometry. Actual values logged to browser console after first frame.*
 
-### Phase 3 — Road and Camera Quality
+### Phase 3 — Road and Camera Quality ⏪ REVERTED (intentional)
 
-> Goal: the drive itself feels cinematic.
+> **Status: Implemented in commit `02ac0bc`, then intentionally reverted in commit `f26f494`.**
+>
+> **Reason for revert:** After reviewing the elevated mountain road and terrain changes live, the original flat winding road, scenery, and lighting were preferred. The visual experience was better with the flat road. The revert was performed via `git revert 02ac0bc` (no history was rewritten; both commits are preserved in the log on `feature/stability-navigation`).
+
+#### What Phase 3 had implemented (now removed)
+
+- Piecewise-smoothstep road elevation profile (`ELEV_PTS`, `roadElevation()`)  
+- Updated spline Y to climb from y=0 → peak y=21 at t=0.88 → y=18 descent  
+- `terrainYAt(wx, wz)` terrain height function (sigmoid lateral drop-off + undulation)  
+- Road-following terrain strip mesh (6,231 vertices / 12,000 triangles, `groundMat`)  
+- Ground plane lowered to y=−25 (valley floor)  
+- Road dash Y fix: `a.y + 0.055`  
+- Mountain bases anchored via `terrainYAt()`  
+- Tree grounding via per-tree sigmoid base Y  
+- Milestone markers: `pos.y = p.y + 1.7`
+
+#### Current state after revert
+
+All pre-Phase-3 values are restored exactly:
+- Spline Y = 0 for all control points (flat winding road)
+- Ground plane at y = −0.08 with `receiveShadow`
+- Road dashes at fixed y = 0.055
+- Mountain centres at `h/2 − 1` (original positioning)
+- Tree trunks centred at `0.7 × scale`, foliage at `(1.2 + j × 0.62) × scale`
+- Milestone markers at `pos.y = 1.7`
+
+**Verification:** 30/30 structural assertions passed; `node --check` syntax clean.
+
+#### If Phase 3 should be revisited
+
+Re-implement from the Phase 3 design notes above, or cherry-pick `02ac0bc` and refine the elevation profile and terrain blending to better suit the artistic vision before re-applying.
+
+**Original planned items (unchanged):**
 
 1. **Add elevation to spline** — modify Y of control points to create 2–3 gentle hills and a final crest before the golden horizon stop
 2. **Increase look-ahead during travel** — interpolate `lookAhead` from `0.035` (stopped) to `0.065` (full speed)
