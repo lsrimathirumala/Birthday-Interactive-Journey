@@ -1,0 +1,23 @@
+# ── Personal photographs — NEVER commit to the public repository ──────────
+# These files are personal family photographs. They live in assets/photos/
+# locally but must not be uploaded to GitHub.
+assets/photos/**/*.jpg
+assets/photos/**/*.jpeg
+assets/photos/**/*.png
+assets/photos/**/*.webp
+assets/photos/**/*.heic
+assets/photos/**/*.HEIC
+assets/photos/**/*.JPG
+assets/photos/**/*.JPEG
+assets/photos/**/*.PNG
+
+# Keep the placeholder .gitkeep files (empty, no personal data)
+!assets/photos/**/.gitkeep
+
+# ── Salesforce / IDE metadata ─────────────────────────────────────────────
+.sf/
+
+# ── OS junk ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
